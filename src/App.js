@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import LoginForm from "./components/pure/LoginForm";
+import Register from "./components/pure/Register";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./components/pure/Navbar";
+import LandingPage from "./components/pages/LandingPage";
 
 function App() {
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+  useEffect(() => {
+    setisLoggedIn(localStorage.getItem("userId") !== null);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        {isLoggedIn ? <Navbar /> : <LandingPage />}
+        <Routes>
+          <Route path="/login" element={<LoginForm />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
