@@ -1,8 +1,9 @@
-import React from "react";
-import "./LandingPage.css";
+import React, { useState } from "react";
+import "./LoginPage.css";
 import LoginForm from "../pure/LoginForm";
+import { Link } from "react-router-dom";
 
-const LandingPage = () => {
+const LoginPage = ({ handleLogin }) => {
   return (
     <div className="landing-container">
       <div className="message-container">
@@ -17,11 +18,12 @@ const LandingPage = () => {
         <div className="division-line"></div>
         <div className="login-container">
           <h4>Ingresa</h4>
-          <LoginForm />
+          <LoginForm toogleLogin={handleLogin} />
         </div>
+        <Link to={"/register"}>Register</Link>
       </div>
     </div>
   );
 };
 
-export default LandingPage;
+export default LoginPage;

@@ -1,7 +1,8 @@
 import { Formik, Form } from "formik";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./LoginForm.css";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import CustomInput from "../pure/CustomInput";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -22,6 +23,8 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { Oval } from "react-loader-spinner";
+import { AppContext } from "../../App";
+import { Navigate, redirect } from "react-router-dom";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -31,7 +34,7 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("This field is required!"),
 });
 
-const LoginForm = () => {
+const LoginForm = ({ toogleLogin }) => {
   const [loginRequest, setLoginRequest] = useState({ email: "", password: "" });
   const [passwordVisible, setPasswordVisible] = useState("password");
   const [isLoading, setisLoading] = useState(false);
@@ -41,6 +44,7 @@ const LoginForm = () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const db = getFirestore(app);
+  const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     provider.setCustomParameters({ prompt: "select_account" });
@@ -52,6 +56,8 @@ const LoginForm = () => {
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
           localStorage.setItem("userUID", result.user.uid);
+          toogleLogin(true);
+          navigate("/home");
         } else {
           const userCollectionRef = collection(db, "users");
           const nameArray = result?.user?.displayName?.split(/\s+/);

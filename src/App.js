@@ -1,25 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import LoginForm from "./components/pure/LoginForm";
-import Register from "./components/pure/Register";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/pure/Navbar";
-import LandingPage from "./components/pages/LandingPage";
+import LoginPage from "./components/pages/LoginPage";
+import HomePage from "./components/pages/HomePage";
+import Redirecter from "./components/pages/Redirecter";
+import RegisterPage from "./components/pages/RegisterPage";
 
 function App() {
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-  useEffect(() => {
-    setisLoggedIn(localStorage.getItem("userId") !== null);
-  }, []);
+  const [isLoggedIn, setisLoggedIn] = useState(
+    localStorage.getItem("userUID") !== null
+  );
+
+  const toogleLoggedIn = (boolean) => {
+    setisLoggedIn(boolean);
+  };
 
   return (
     <div className="App">
       <BrowserRouter>
-        {isLoggedIn ? <Navbar /> : <LandingPage />}
+        {isLoggedIn && <Navbar />}
         <Routes>
-          <Route path="/login" element={<LoginForm />}></Route>
-          <Route path="/register" element={<Register />}></Route>
+          <Route
+            path="/loginPage"
+            element={<LoginPage handleLogin={toogleLoggedIn} />}
+          ></Route>
+          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route
+            path="/"
+            element={<Redirecter userState={isLoggedIn} />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
