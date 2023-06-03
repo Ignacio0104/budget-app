@@ -13,6 +13,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
+import "./RegisterForm.css";
+import { Alert, Snackbar } from "@mui/material";
 
 const loginSchema = yup.object().shape({
   name: yup
@@ -37,7 +39,7 @@ const loginSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
-const Register = () => {
+const Register = ({ handleError }) => {
   const [registerRequest, setRegisterRequest] = useState({
     name: "",
     lastname: "",
@@ -48,8 +50,6 @@ const Register = () => {
     passwordOne: true,
     passwordTwo: true,
   });
-
-  const [error, setError] = useState("");
 
   const handleChange = (field, value) => {
     setRegisterRequest({ ...registerRequest, [field]: value });
@@ -69,21 +69,19 @@ const Register = () => {
         await addDoc(collectionRef, {
           name: registerRequest.name,
           lastname: registerRequest.lastname,
-          favorites: [],
           email: registerRequest.email,
-          creditCards: [],
-          history: [],
-          address: "",
           profilPic: "",
           uid: userCredential.user.uid,
         });
-        setError("");
+        handleError("");
       })
       .catch((error) => {
         if (error.message.includes("already-in-use")) {
-          setError("The Email Address entered already exists in the system.");
+          handleError(
+            "The Email Address entered already exists in the system."
+          );
         } else {
-          setError(error.message);
+          handleError(error.message);
         }
       });
   };
@@ -163,15 +161,12 @@ const Register = () => {
                   )}
                 </div>
               </div>
-              <button type="submit">Submit</button>
+              <button className="submit-btn" type="submit">
+                Submit
+              </button>
             </Form>
           )}
         </Formik>
-        {error && (
-          <div className="form-error-container">
-            <h4>{error}</h4>
-          </div>
-        )}
       </div>
     </div>
   );
