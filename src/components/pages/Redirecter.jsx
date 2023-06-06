@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 const Redirecter = () => {
   const auth = getAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(auth.currentUser);
+  console.log(isLoggedIn);
 
   return (
     <div>

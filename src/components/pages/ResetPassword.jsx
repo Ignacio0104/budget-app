@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { Oval } from "react-loader-spinner";
 import * as yup from "yup";
 import "./ResetPassword.css";
-import { getAuth } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const resetSchema = yup.object().shape({
   email: yup
@@ -16,8 +16,14 @@ const resetSchema = yup.object().shape({
 const ResetPassword = () => {
   const [mailRequest, setmMailRequest] = useState({ email: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const auth = getAuth();
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    setIsLoading(true);
+    sendPasswordResetEmail(auth, mailRequest.email).then(() => {
+      setIsLoading(false);
+    });
+  };
   const handleChange = (field, value) => {
     setmMailRequest({ ...mailRequest, [field]: value });
   };

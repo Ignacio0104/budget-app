@@ -55,6 +55,7 @@ const LoginForm = ({ toogleLogin }) => {
         const userQuery = query(docRef, where("email", "==", email));
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
+          toogleLogin();
           navigate("/");
         } else {
           const userCollectionRef = collection(db, "users");
@@ -79,8 +80,8 @@ const LoginForm = ({ toogleLogin }) => {
     setisLoading(true);
     signInWithEmailAndPassword(auth, loginRequest.email, loginRequest.password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(userCredential);
+        toogleLogin();
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
