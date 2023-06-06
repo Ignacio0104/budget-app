@@ -55,9 +55,7 @@ const LoginForm = ({ toogleLogin }) => {
         const userQuery = query(docRef, where("email", "==", email));
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
-          localStorage.setItem("userUID", result.user.uid);
-          toogleLogin(true);
-          navigate("/home");
+          navigate("/");
         } else {
           const userCollectionRef = collection(db, "users");
           const nameArray = result?.user?.displayName?.split(/\s+/);

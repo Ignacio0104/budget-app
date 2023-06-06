@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-const Redirecter = ({ userState }) => {
-  console.log(userState);
+const Redirecter = () => {
+  const auth = getAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(auth.currentUser);
+
   return (
     <div>
-      {userState ? (
+      {isLoggedIn ? (
         <Navigate to="/home" replace={true} />
       ) : (
         <Navigate to="/loginPage" replace={true} />

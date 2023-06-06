@@ -20,7 +20,14 @@ const LoginPage = ({ handleLogin }) => {
           <h4>Ingresa</h4>
           <LoginForm toogleLogin={handleLogin} />
         </div>
-        <Link to={"/register"}>Register</Link>
+        <div className="forgot-register-container">
+          <Link to={"/resetPassword"} className="forgot-link">
+            Olvidaste tu clave?
+          </Link>
+          <Link to={"/register"} className="register-link">
+            Register
+          </Link>
+        </div>
       </div>
     </div>
   );

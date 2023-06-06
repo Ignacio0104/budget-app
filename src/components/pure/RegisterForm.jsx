@@ -14,7 +14,8 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import "./RegisterForm.css";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = yup.object().shape({
   name: yup
@@ -39,7 +40,7 @@ const loginSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
-const Register = ({ handleError }) => {
+const Register = ({ handleError, confirmSubmit }) => {
   const [registerRequest, setRegisterRequest] = useState({
     name: "",
     lastname: "",
@@ -50,6 +51,7 @@ const Register = ({ handleError }) => {
     passwordOne: true,
     passwordTwo: true,
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (field, value) => {
     setRegisterRequest({ ...registerRequest, [field]: value });
@@ -58,6 +60,8 @@ const Register = ({ handleError }) => {
   const handleSubmit = async () => {
     const auth = getAuth();
     const db = getFirestore(app);
+
+    setSubmitting(true);
 
     createUserWithEmailAndPassword(
       auth,
@@ -74,16 +78,18 @@ const Register = ({ handleError }) => {
           uid: userCredential.user.uid,
         });
         handleError("");
+        confirmSubmit(true);
       })
       .catch((error) => {
         if (error.message.includes("already-in-use")) {
           handleError(
-            "The Email Address entered already exists in the system."
+            "El email ingresado ya se encuentra registrado en nuestro sistema"
           );
         } else {
           handleError(error.message);
         }
-      });
+      })
+      .finally(setSubmitting(false));
   };
 
   const togglePassword = (index) => {
@@ -162,7 +168,11 @@ const Register = ({ handleError }) => {
                 </div>
               </div>
               <button className="submit-btn" type="submit">
-                Submit
+                {submitting ? (
+                  <CircularProgress size="20px" color="info" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </Form>
           )}

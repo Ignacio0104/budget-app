@@ -7,11 +7,12 @@ import LoginPage from "./components/pages/LoginPage";
 import HomePage from "./components/pages/HomePage";
 import Redirecter from "./components/pages/Redirecter";
 import RegisterPage from "./components/pages/RegisterPage";
+import ResetPassword from "./components/pages/ResetPassword";
+import { getAuth } from "firebase/auth";
 
 function App() {
-  const [isLoggedIn, setisLoggedIn] = useState(
-    localStorage.getItem("userUID") !== null
-  );
+  const auth = getAuth();
+  const [isLoggedIn, setisLoggedIn] = useState(auth.currentUser);
 
   const toogleLoggedIn = (boolean) => {
     setisLoggedIn(boolean);
@@ -28,6 +29,7 @@ function App() {
           ></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/resetPassword" element={<ResetPassword />}></Route>
           <Route
             path="/"
             element={<Redirecter userState={isLoggedIn} />}
