@@ -1,31 +1,44 @@
-import React, { useContext } from "react";
-import PaidIcon from "@mui/icons-material/Paid";
+import React, { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { AppContext } from "../../App";
+import "./Navbar.css";
 
 const Navbar = () => {
+  const [openResponsive, setOpenResponsive] = useState(false);
   const TestLogout = () => {
     const auth = getAuth();
     signOut(auth);
   };
-  const context = useContext(AppContext);
+
+  const toggleMenu = () => {
+    setOpenResponsive(!openResponsive);
+  };
+
   return (
     <div
       className="hide-nav-container"
-      style={{ display: context.userLoggedIn ? "flex" : "none" }}
+      style={{ display: getAuth().currentUser ? "flex" : "none" }}
     >
       <div className="navbar-main-container-responsive">
         <div className="logo-name-container">
-          <MenuIcon />
+          <span onClick={toggleMenu}>
+            {!openResponsive ? <MenuIcon /> : <CloseIcon />}
+          </span>
           <h3>Expense Tracker</h3>
-          <button onClick={() => TestLogout()}>LogOUT</button>
         </div>
-        <div className="routes-navbar-container">
-          <Link to={"/"}>Gastos</Link>
-          <Link to={"/"}>Objetivos</Link>
-          <Link to={"/"}>Simulaciones</Link>
+        <div
+          className={`routes-navbar-container-responsive ${
+            openResponsive ? "menu-visible" : "menu-hide"
+          }`}
+        >
+          <span onClick={toggleMenu}>
+            <Link to={"/home"}>Home</Link>
+            <Link to={"/expenses"}>Gastos</Link>
+            <Link to={"/goals"}>Objetivos</Link>
+            <Link to={"/simulation"}>Simulaciones</Link>
+          </span>
         </div>
       </div>
     </div>

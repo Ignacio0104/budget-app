@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+.navbar-main-container-responsive{
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid black;
+}
+
+.logo-name-container{
+    display: flex;
+    align-items: center;
+}
+
+.logo-name-container h3{
+    padding: 10px 0px;
+    margin: auto;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 30px;
+}
+
+.logo-name-container svg{
+    font-size: 35px;
+}
+
+.routes-navbar-container-responsive{
+    width: 100%;
+    height: calc(100% - 100px);
+    background-color: rgba(0, 0, 0, 0.678);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    transition: left 0.3s ease;
+}
+
+.menu-hide{
+    left: -100%;
+    transition: all 0.5s ease;
+}
+
+.menu-visible{
+    left: 0px;
+    transition: all 0.5s ease;
+}
+
+.routes-navbar-container-responsive a{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+    text-decoration: none;
+    color: whitesmoke;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 2px;
+    font-size: 30px;
+}
+
+.routes-navbar-container-responsive a:hover{
+    background-color: rgba(176, 174, 174, 0.418);
+}   
