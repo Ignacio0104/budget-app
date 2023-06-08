@@ -10,10 +10,11 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { CircularProgress } from "@mui/material";
+import FormAddExpense from "../pure/FormAddExpense";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
-    month: "Enero",
+    month: 1,
     year: 2015,
   });
   const [expenses, setExpenses] = useState([]);
@@ -48,18 +49,18 @@ const ExpensesPage = () => {
             onChange={(e) => handleChange("month", e)}
             className="select-month"
           >
-            <option value={"Enero"}>Enero</option>
-            <option value={"Febrero"}>Febrero</option>
-            <option value={"Marzo"}>Marzo</option>
-            <option value={"Abril"}>Abril</option>
-            <option value={"Mayo"}>Mayo</option>
-            <option value={"Junio"}>Junio</option>
-            <option value={"Julio"}>Julio</option>
-            <option value={"Agosto"}>Agosto</option>
-            <option value={"Septiembre"}>Septiembre</option>
-            <option value={"Octubre"}>Octubre</option>
-            <option value={"Noviembre"}>Noviembre</option>
-            <option value={"Diciembre"}>Diciembre</option>
+            <option value={1}>Enero</option>
+            <option value={2}>Febrero</option>
+            <option value={3}>Marzo</option>
+            <option value={4}>Abril</option>
+            <option value={5}>Mayo</option>
+            <option value={6}>Junio</option>
+            <option value={7}>Julio</option>
+            <option value={8}>Agosto</option>
+            <option value={9}>Septiembre</option>
+            <option value={10}>Octubre</option>
+            <option value={11}>Noviembre</option>
+            <option value={12}>Diciembre</option>
           </select>
         </div>
         <div className="year-selection">
@@ -77,6 +78,13 @@ const ExpensesPage = () => {
             {isLoading ? <CircularProgress size={20} /> : "Buscar"}
           </button>
         </div>
+      </div>
+      <div className="expenses-container">
+        {expenses.length < 0 ? (
+          "No hay gastos para el mes seleccionado"
+        ) : (
+          <FormAddExpense monthYear={monthRequested} />
+        )}
       </div>
     </div>
   );
