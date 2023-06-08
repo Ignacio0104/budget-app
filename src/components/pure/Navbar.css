@@ -4,6 +4,7 @@
     width: 100%;
     height: 100%;
     border-bottom: 1px solid black;
+    z-index: 100;
 }
 
 .logo-name-container{
@@ -20,6 +21,7 @@
 
 .logo-name-container svg{
     font-size: 35px;
+    cursor: pointer;
 }
 
 .routes-navbar-container-responsive{

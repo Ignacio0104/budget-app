@@ -1,4 +1,4 @@
-.no-goals-card{
+.simulation-card{
     display: flex;
     align-items: center;
     margin: auto;
@@ -14,11 +14,16 @@
     cursor: pointer;
 }
 
-.no-goals-card:hover{
+.simulation-card:hover{
     background: rgba(214, 214, 214, 0.48);
 }
 
-.goals-icon{
+.simulation-text {
+    margin: auto;
+    letter-spacing: 1px;
+}
+
+.projection-icon{
     height: 60px;
     margin-right: 10px;
 }

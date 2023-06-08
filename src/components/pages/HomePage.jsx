@@ -12,6 +12,8 @@ import { useState } from "react";
 import "./HomePage.css";
 import ExpensesCard from "../pure/ExpensesCard";
 import GoalsCard from "../pure/GoalsCard";
+import { Link } from "react-router-dom";
+import SimulationCard from "../pure/SimulationCard";
 
 const HomePage = () => {
   const [expenses, setExpenses] = useState([]);
@@ -41,8 +43,15 @@ const HomePage = () => {
 
   return (
     <div className="home-main-contaner">
-      <ExpensesCard expenses={expenses} />
-      <GoalsCard goals={goals} />
+      <Link to={"/expenses"}>
+        <ExpensesCard expenses={expenses} />
+      </Link>
+      <Link to={"/goals"}>
+        <GoalsCard goals={goals} />
+      </Link>
+      <Link to={"/simulation"}>
+        <SimulationCard />
+      </Link>
     </div>
   );
 };
