@@ -59,7 +59,14 @@ const ExpensesPage = () => {
 
   const handleSubmit = () => {
     setSearchSubmitted(false);
-    setSelectedExpenses(expenses[monthRequested.year][monthRequested.month]);
+    if (
+      expenses[monthRequested.year] !== undefined &&
+      expenses[monthRequested.year][monthRequested.month] !== undefined
+    ) {
+      setSelectedExpenses(expenses[monthRequested.year][monthRequested.month]);
+    } else {
+      setSelectedExpenses([]);
+    }
 
     setSearchSubmitted(true);
   };
@@ -105,7 +112,7 @@ const ExpensesPage = () => {
       </div>
       {searchSubmitted ? (
         <div className="expenses-container">
-          {expenses.length <= 0
+          {selectedExpenses.length <= 0
             ? "No hay gastos para el mes seleccionado"
             : "Hay gastos"}
           <div className="form-add-main-container">
