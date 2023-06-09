@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ExpensesPage.css";
 import { getAuth } from "firebase/auth";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -19,25 +21,42 @@ const ExpensesPage = () => {
   });
   const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
 
+  useEffect(() => {
+    fetchUserExpenses();
+  }, []);
+
   const fetchUserExpenses = async () => {
-    const docRef = collection(db, "expenses");
-    const queryString = query(docRef, where("userUID", "==", uid));
-    const expensesSnapshot = await getDocs(queryString);
-    setExpenses(expensesSnapshot);
+    const docRef = doc(db, "expenses", uid);
+    const docSnap = await getDoc(docRef);
+    docSnap.data();
+    try {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setExpenses(docSnap.data());
+      } else {
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (input, value) => {
+    setSearchSubmitted(false);
     setMonthRequested({ ...monthRequested, [input]: value.target.value });
   };
 
   const handleSubmit = async () => {
+    setSearchSubmitted(false);
     setIsLoading(true);
     await fetchUserExpenses();
     setIsLoading(false);
+    setSearchSubmitted(true);
   };
 
   return (
@@ -79,13 +98,16 @@ const ExpensesPage = () => {
           </button>
         </div>
       </div>
-      <div className="expenses-container">
-        {expenses.length < 0 ? (
-          "No hay gastos para el mes seleccionado"
-        ) : (
-          <FormAddExpense monthYear={monthRequested} />
-        )}
-      </div>
+      {searchSubmitted ? (
+        <div className="expenses-container">
+          {expenses.length <= 0
+            ? "No hay gastos para el mes seleccionado"
+            : "Hay gastos"}
+          <div className="form-add-main-container">
+            <FormAddExpense monthYear={monthRequested} userUID={uid} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

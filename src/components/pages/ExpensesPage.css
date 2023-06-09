@@ -59,3 +59,9 @@
     border-radius: 10px;
 }
 
+.form-add-main-container{
+    width: fit-content;
+    margin: auto;
+    margin-top: 30px;
+}
+

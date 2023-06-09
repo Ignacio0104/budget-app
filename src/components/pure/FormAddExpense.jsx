@@ -2,23 +2,34 @@ import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import CustomInput from "./CustomInput";
-import { Oval } from "react-loader-spinner";
+import "./FormAddExpense.css";
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
+import { app } from "../../firebase/fibaseConfig";
 
 const expenseSchema = yup.object().shape({
   date: yup.date().required("This field is required!"),
-  amount: yup.number().required("This field is required!"),
+  amount: yup
+    .number()
+    .required("This field is required!")
+    .min(1, "Amount must be greater than 0!"),
   description: yup
     .string()
     .required("This field is required!")
     .min(2, "Description too short!"),
 });
 
-const FormAddExpense = ({ monthYear }) => {
+const FormAddExpense = ({ monthYear, userUID }) => {
   const [dateLimit, setDateLimit] = useState({});
   const [expenseToSubmit, setExpenseToSubmit] = useState({
     date: `${monthYear.year}-${
       monthYear.month < 10 ? "0" + monthYear.month : monthYear.month
-    }-1`,
+    }-01`,
     amount: 1,
     description: "",
   });
@@ -57,8 +68,18 @@ const FormAddExpense = ({ monthYear }) => {
     );
   }, [monthYear]);
 
-  const handleSubmit = () => {
-    console.log(expenseToSubmit);
+  const db = getFirestore(app);
+
+  const handleSubmit = async () => {
+    await setDoc(doc(db, "expenses", userUID), {
+      [monthYear.year]: [
+        {
+          [monthYear.month]: {
+            ...expenseToSubmit,
+          },
+        },
+      ],
+    });
   };
   const handleChange = (field, value) => {
     setExpenseToSubmit({ ...expenseToSubmit, [field]: value });
@@ -74,6 +95,7 @@ const FormAddExpense = ({ monthYear }) => {
         {(props) => (
           <Form className="input-container">
             <div className="date-container">
+              <label>Fecha: </label>
               <CustomInput
                 label="Date"
                 name="date"
@@ -86,6 +108,7 @@ const FormAddExpense = ({ monthYear }) => {
               ></CustomInput>
             </div>
             <div className="amount-container">
+              <label>Monto: </label>
               <CustomInput
                 label="Amount"
                 type="number"
@@ -95,6 +118,7 @@ const FormAddExpense = ({ monthYear }) => {
               ></CustomInput>
             </div>
             <div className="description-container">
+              <label>Descripcion: </label>
               <CustomInput
                 label="Description"
                 name="description"

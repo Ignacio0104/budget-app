@@ -1,0 +1,4 @@
+.date-container, .amount-container{
+    display: flex;
+    justify-content: space-around;
+}
