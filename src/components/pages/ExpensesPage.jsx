@@ -20,6 +20,7 @@ const ExpensesPage = () => {
     year: 2015,
   });
   const [expenses, setExpenses] = useState([]);
+  const [selectedExpenses, setSelectedExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const auth = getAuth();
@@ -30,6 +31,10 @@ const ExpensesPage = () => {
     fetchUserExpenses();
   }, []);
 
+  useEffect(() => {
+    console.log(selectedExpenses);
+  }, [selectedExpenses]);
+
   const fetchUserExpenses = async () => {
     const docRef = doc(db, "expenses", uid);
     const docSnap = await getDoc(docRef);
@@ -37,7 +42,8 @@ const ExpensesPage = () => {
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setExpenses(docSnap.data());
+        let data = docSnap.data();
+        setExpenses(data);
       } else {
         console.log("Document does not exist");
       }
@@ -51,11 +57,10 @@ const ExpensesPage = () => {
     setMonthRequested({ ...monthRequested, [input]: value.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSearchSubmitted(false);
-    setIsLoading(true);
-    await fetchUserExpenses();
-    setIsLoading(false);
+    setSelectedExpenses(expenses[monthRequested.year][monthRequested.month]);
+
     setSearchSubmitted(true);
   };
 
@@ -104,7 +109,11 @@ const ExpensesPage = () => {
             ? "No hay gastos para el mes seleccionado"
             : "Hay gastos"}
           <div className="form-add-main-container">
-            <FormAddExpense monthYear={monthRequested} userUID={uid} />
+            <FormAddExpense
+              monthYear={monthRequested}
+              userUID={uid}
+              expensesSelected={selectedExpenses}
+            />
           </div>
         </div>
       ) : null}

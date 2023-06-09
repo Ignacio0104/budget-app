@@ -24,7 +24,7 @@ const expenseSchema = yup.object().shape({
     .min(2, "Description too short!"),
 });
 
-const FormAddExpense = ({ monthYear, userUID }) => {
+const FormAddExpense = ({ monthYear, userUID, expensesSelected }) => {
   const [dateLimit, setDateLimit] = useState({});
   const [expenseToSubmit, setExpenseToSubmit] = useState({
     date: `${monthYear.year}-${
@@ -71,15 +71,15 @@ const FormAddExpense = ({ monthYear, userUID }) => {
   const db = getFirestore(app);
 
   const handleSubmit = async () => {
-    await setDoc(doc(db, "expenses", userUID), {
-      [monthYear.year]: [
-        {
-          [monthYear.month]: {
-            ...expenseToSubmit,
-          },
+    await setDoc(
+      doc(db, "expenses", userUID),
+      {
+        [monthYear.year]: {
+          [monthYear.month]: [...expensesSelected, expenseToSubmit],
         },
-      ],
-    });
+      },
+      { merge: true }
+    );
   };
   const handleChange = (field, value) => {
     setExpenseToSubmit({ ...expenseToSubmit, [field]: value });
