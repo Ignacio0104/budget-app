@@ -70,4 +70,12 @@
     display: flex;
     justify-content: center;
     margin-top: 30%;
+
+}
+
+.no-graph-text{
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    font-family: 'Quicksand', sans-serif;
 }

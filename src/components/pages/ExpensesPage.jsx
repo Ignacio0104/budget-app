@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ExpensesPage.css";
 import { getAuth } from "firebase/auth";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { CircularProgress } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
@@ -38,6 +30,7 @@ const ExpensesPage = () => {
   }, []);
 
   useEffect(() => {
+    setMonthExpensesLength(0);
     if (!isInitialRender) {
       updateInformation();
       setIsLoading(false);
@@ -65,6 +58,7 @@ const ExpensesPage = () => {
       } else {
         console.log("Document does not exist");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +85,6 @@ const ExpensesPage = () => {
 
   const handleAddExpense = async () => {
     await fetchUserExpenses();
-    updateInformation();
   };
 
   if (isLoading) {
@@ -138,7 +131,9 @@ const ExpensesPage = () => {
       </div>
       <div className="expenses-container">
         {monthExpensesLength <= 0 ? (
-          "No hay gastos para el mes seleccionado"
+          <p className="no-graph-text">
+            No hay gastos para el mes seleccionado
+          </p>
         ) : (
           <Graph expenses={selectedExpenses} />
         )}
