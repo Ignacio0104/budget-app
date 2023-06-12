@@ -4,6 +4,7 @@ import "./CustomInput.css";
 
 const CustomInput = ({ label, handleChange, toogleVisibility, ...props }) => {
   const [field, meta] = useField(props);
+
   return (
     <div className="custom-input-container">
       {props.type !== "textarea" ? (

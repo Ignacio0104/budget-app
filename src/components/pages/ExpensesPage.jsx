@@ -22,19 +22,26 @@ const ExpensesPage = () => {
   });
   const [expenses, setExpenses] = useState([]);
   const [selectedExpenses, setSelectedExpenses] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
+  let initialRender = true;
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchUserExpenses();
-    setIsLoading(false);
+    const fetchData = async () => {
+      await fetchUserExpenses();
+      setIsInitialRender(false);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
-    console.log(expenses);
+    if (!isInitialRender) {
+      updateInformation();
+      setIsLoading(false);
+    }
   }, [expenses]);
 
   useEffect(() => {
@@ -42,6 +49,7 @@ const ExpensesPage = () => {
   }, [monthRequested]);
 
   const fetchUserExpenses = async () => {
+    console.log("Loading...");
     const docRef = doc(db, "expenses", uid);
     const docSnap = await getDoc(docRef);
     docSnap.data();
@@ -50,6 +58,7 @@ const ExpensesPage = () => {
       if (docSnap.exists()) {
         let data = docSnap.data();
         setExpenses(data);
+        console.log("Done!");
       } else {
         console.log("Document does not exist");
       }
@@ -67,23 +76,16 @@ const ExpensesPage = () => {
       expenses[monthRequested.year] !== undefined &&
       expenses[monthRequested.year][monthRequested.month] !== undefined
     ) {
-      setSelectedExpenses(expenses[monthRequested.year][monthRequested.month]);
+      setSelectedExpenses([
+        ...expenses[monthRequested.year][monthRequested.month],
+      ]);
     } else {
       setSelectedExpenses([]);
     }
   };
 
-  const handleAddExpense = (expense) => {
-    setExpenses({
-      ...expenses,
-      [monthRequested.year]: {
-        ...(expenses[monthRequested.year] || {}),
-        [monthRequested.month]: [
-          ...(expenses[monthRequested.year]?.[monthRequested.month] || []),
-          expense,
-        ],
-      },
-    });
+  const handleAddExpense = async () => {
+    await fetchUserExpenses();
     updateInformation();
   };
 
@@ -136,7 +138,7 @@ const ExpensesPage = () => {
             monthYear={monthRequested}
             userUID={uid}
             expensesSelected={selectedExpenses}
-            addExpenseLocal={handleAddExpense}
+            updateExpenseLocal={handleAddExpense}
           />
         </div>
       </div>

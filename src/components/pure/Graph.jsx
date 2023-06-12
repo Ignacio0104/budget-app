@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 
 const Graph = ({ expenses }) => {
@@ -14,7 +14,7 @@ const Graph = ({ expenses }) => {
   });
   return (
     <div className="chart-container">
-      <Pie data={expensesData}></Pie>
+      <Doughnut data={expensesData}></Doughnut>
     </div>
   );
 };

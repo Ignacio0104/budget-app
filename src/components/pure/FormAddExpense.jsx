@@ -29,7 +29,7 @@ const FormAddExpense = ({
   monthYear,
   userUID,
   expensesSelected,
-  addExpenseLocal,
+  updateExpenseLocal,
 }) => {
   const [dateLimit, setDateLimit] = useState({});
   const [expenseToSubmit, setExpenseToSubmit] = useState({
@@ -77,7 +77,7 @@ const FormAddExpense = ({
 
   const db = getFirestore(app);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values, { resetForm }) => {
     setisSubmitting(true);
     let expense = {
       [monthYear.year]: {
@@ -85,18 +85,19 @@ const FormAddExpense = ({
       },
     };
     await setDoc(doc(db, "expenses", userUID), expense, { merge: true });
-    addExpenseLocal({
-      [monthYear.month]: [...expensesSelected, expenseToSubmit],
-    });
-    setisSubmitting(false);
+    updateExpenseLocal();
     setExpenseToSubmit({
+      ...expenseToSubmit,
       date: `${monthYear.year}-${
         monthYear.month < 10 ? "0" + monthYear.month : monthYear.month
       }-01`,
       amount: 1,
       description: "",
     });
+    setisSubmitting(false);
+    resetForm();
   };
+
   const handleChange = (field, value) => {
     setExpenseToSubmit({ ...expenseToSubmit, [field]: value });
   };
