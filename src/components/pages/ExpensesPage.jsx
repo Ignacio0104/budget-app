@@ -24,10 +24,10 @@ const ExpensesPage = () => {
   const [selectedExpenses, setSelectedExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const [monthExpensesLength, setMonthExpensesLength] = useState(0);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
-  let initialRender = true;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,11 +45,15 @@ const ExpensesPage = () => {
   }, [expenses]);
 
   useEffect(() => {
+    setMonthExpensesLength(0);
     updateInformation();
   }, [monthRequested]);
 
+  useEffect(() => {
+    setMonthExpensesLength(selectedExpenses.length);
+  }, [selectedExpenses]);
+
   const fetchUserExpenses = async () => {
-    console.log("Loading...");
     const docRef = doc(db, "expenses", uid);
     const docSnap = await getDoc(docRef);
     docSnap.data();
@@ -58,7 +62,6 @@ const ExpensesPage = () => {
       if (docSnap.exists()) {
         let data = docSnap.data();
         setExpenses(data);
-        console.log("Done!");
       } else {
         console.log("Document does not exist");
       }
@@ -68,7 +71,9 @@ const ExpensesPage = () => {
   };
 
   const handleChange = (input, value) => {
+    setIsLoading(true);
     setMonthRequested({ ...monthRequested, [input]: value.target.value });
+    setIsLoading(false);
   };
 
   const updateInformation = () => {
@@ -90,7 +95,11 @@ const ExpensesPage = () => {
   };
 
   if (isLoading) {
-    return <CircularProgress size={20}></CircularProgress>;
+    return (
+      <div className="spinner-container">
+        <CircularProgress size={60}></CircularProgress>
+      </div>
+    );
   }
 
   return (
@@ -128,7 +137,7 @@ const ExpensesPage = () => {
         </div>
       </div>
       <div className="expenses-container">
-        {selectedExpenses.length <= 0 ? (
+        {monthExpensesLength <= 0 ? (
           "No hay gastos para el mes seleccionado"
         ) : (
           <Graph expenses={selectedExpenses} />
