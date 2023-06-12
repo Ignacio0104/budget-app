@@ -3,9 +3,17 @@ import "./ExpensesPage.css";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
-import { CircularProgress } from "@mui/material";
+import {
+  Alert,
+  CircularProgress,
+  IconButton,
+  Slide,
+  Snackbar,
+} from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
 import Graph from "../pure/Graph";
+import { TransitionDown } from "../utils/snackBarAnimations";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
@@ -17,6 +25,7 @@ const ExpensesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [monthExpensesLength, setMonthExpensesLength] = useState(0);
+  const [modalError, setModalError] = useState({ open: false, error: "" });
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
@@ -60,7 +69,7 @@ const ExpensesPage = () => {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      setModalError({ ...modalError, open: true, error: error });
     }
   };
 
@@ -146,6 +155,17 @@ const ExpensesPage = () => {
           />
         </div>
       </div>
+      <Snackbar
+        open={modalError.open}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        TransitionComponent={TransitionDown}
+        onClose={() => setModalError({ ...modalError, open: false, error: "" })}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {modalError.error}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
