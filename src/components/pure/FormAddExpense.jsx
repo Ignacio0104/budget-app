@@ -11,6 +11,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
+import { CircularProgress } from "@mui/material";
 
 const expenseSchema = yup.object().shape({
   date: yup.date().required("This field is required!"),
@@ -24,7 +25,12 @@ const expenseSchema = yup.object().shape({
     .min(2, "Description too short!"),
 });
 
-const FormAddExpense = ({ monthYear, userUID, expensesSelected }) => {
+const FormAddExpense = ({
+  monthYear,
+  userUID,
+  expensesSelected,
+  addExpenseLocal,
+}) => {
   const [dateLimit, setDateLimit] = useState({});
   const [expenseToSubmit, setExpenseToSubmit] = useState({
     date: `${monthYear.year}-${
@@ -33,6 +39,7 @@ const FormAddExpense = ({ monthYear, userUID, expensesSelected }) => {
     amount: 1,
     description: "",
   });
+  const [isSubmitting, setisSubmitting] = useState(false);
   const calculateMonth = () => {
     switch (+monthYear.month) {
       case 1:
@@ -71,15 +78,24 @@ const FormAddExpense = ({ monthYear, userUID, expensesSelected }) => {
   const db = getFirestore(app);
 
   const handleSubmit = async () => {
-    await setDoc(
-      doc(db, "expenses", userUID),
-      {
-        [monthYear.year]: {
-          [monthYear.month]: [...expensesSelected, expenseToSubmit],
-        },
+    setisSubmitting(true);
+    let expense = {
+      [monthYear.year]: {
+        [monthYear.month]: [...expensesSelected, expenseToSubmit],
       },
-      { merge: true }
-    );
+    };
+    await setDoc(doc(db, "expenses", userUID), expense, { merge: true });
+    addExpenseLocal({
+      [monthYear.month]: [...expensesSelected, expenseToSubmit],
+    });
+    setisSubmitting(false);
+    setExpenseToSubmit({
+      date: `${monthYear.year}-${
+        monthYear.month < 10 ? "0" + monthYear.month : monthYear.month
+      }-01`,
+      amount: 1,
+      description: "",
+    });
   };
   const handleChange = (field, value) => {
     setExpenseToSubmit({ ...expenseToSubmit, [field]: value });
@@ -126,7 +142,11 @@ const FormAddExpense = ({ monthYear, userUID, expensesSelected }) => {
               ></CustomInput>
             </div>
             <button className="submit-btn" type="submit">
-              Submit
+              {isSubmitting ? (
+                <CircularProgress size={20}></CircularProgress>
+              ) : (
+                "Submit"
+              )}
             </button>
           </Form>
         )}

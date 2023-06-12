@@ -13,27 +13,33 @@ import {
 import { app } from "../../firebase/fibaseConfig";
 import { CircularProgress } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
+import Graph from "../pure/Graph";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
     month: 1,
-    year: 2015,
+    year: 2023,
   });
   const [expenses, setExpenses] = useState([]);
   const [selectedExpenses, setSelectedExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUserExpenses();
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    console.log(selectedExpenses);
-  }, [selectedExpenses]);
+    console.log(expenses);
+  }, [expenses]);
+
+  useEffect(() => {
+    updateInformation();
+  }, [monthRequested]);
 
   const fetchUserExpenses = async () => {
     const docRef = doc(db, "expenses", uid);
@@ -53,12 +59,10 @@ const ExpensesPage = () => {
   };
 
   const handleChange = (input, value) => {
-    setSearchSubmitted(false);
     setMonthRequested({ ...monthRequested, [input]: value.target.value });
   };
 
-  const handleSubmit = () => {
-    setSearchSubmitted(false);
+  const updateInformation = () => {
     if (
       expenses[monthRequested.year] !== undefined &&
       expenses[monthRequested.year][monthRequested.month] !== undefined
@@ -67,9 +71,25 @@ const ExpensesPage = () => {
     } else {
       setSelectedExpenses([]);
     }
-
-    setSearchSubmitted(true);
   };
+
+  const handleAddExpense = (expense) => {
+    setExpenses({
+      ...expenses,
+      [monthRequested.year]: {
+        ...(expenses[monthRequested.year] || {}),
+        [monthRequested.month]: [
+          ...(expenses[monthRequested.year]?.[monthRequested.month] || []),
+          expense,
+        ],
+      },
+    });
+    updateInformation();
+  };
+
+  if (isLoading) {
+    return <CircularProgress size={20}></CircularProgress>;
+  }
 
   return (
     <div className="expense-page-container">
@@ -104,26 +124,22 @@ const ExpensesPage = () => {
             max={3000}
           />
         </div>
-        <div className="search-btn-container">
-          <button className="search-btn" onClick={handleSubmit}>
-            {isLoading ? <CircularProgress size={20} /> : "Buscar"}
-          </button>
+      </div>
+      <div className="expenses-container">
+        {selectedExpenses.length <= 0 ? (
+          "No hay gastos para el mes seleccionado"
+        ) : (
+          <Graph expenses={selectedExpenses} />
+        )}
+        <div className="form-add-main-container">
+          <FormAddExpense
+            monthYear={monthRequested}
+            userUID={uid}
+            expensesSelected={selectedExpenses}
+            addExpenseLocal={handleAddExpense}
+          />
         </div>
       </div>
-      {searchSubmitted ? (
-        <div className="expenses-container">
-          {selectedExpenses.length <= 0
-            ? "No hay gastos para el mes seleccionado"
-            : "Hay gastos"}
-          <div className="form-add-main-container">
-            <FormAddExpense
-              monthYear={monthRequested}
-              userUID={uid}
-              expensesSelected={selectedExpenses}
-            />
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 };
