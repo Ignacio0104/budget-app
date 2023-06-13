@@ -1,0 +1,21 @@
+.list-container{
+    width: 95%;
+    margin: auto;
+    max-height: 30vh;
+    overflow: scroll;
+}
+.expense-list-item{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.amount-trash-container{
+    display: flex;
+    align-items: center;
+}
+
+.button-confirmation-container{
+    margin-top: 20px;
+}
+ 

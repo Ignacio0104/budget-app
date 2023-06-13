@@ -14,6 +14,7 @@ import FormAddExpense from "../pure/FormAddExpense";
 import Graph from "../pure/Graph";
 import { TransitionDown } from "../utils/snackBarAnimations";
 import CloseIcon from "@mui/icons-material/Close";
+import ExpensesList from "../pure/ExpensesList";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
@@ -26,13 +27,14 @@ const ExpensesPage = () => {
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [monthExpensesLength, setMonthExpensesLength] = useState(0);
   const [modalError, setModalError] = useState({ open: false, error: "" });
+  const [selectionGraph, setSelectionGraph] = useState("Graph");
   const auth = getAuth();
   const uid = auth.currentUser.uid;
   const db = getFirestore(app);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchUserExpenses();
+    const fetchData = () => {
+      fetchUserExpenses();
       setIsInitialRender(false);
     };
     fetchData();
@@ -47,6 +49,7 @@ const ExpensesPage = () => {
   }, [expenses]);
 
   useEffect(() => {
+    rerenderList();
     setMonthExpensesLength(0);
     updateInformation();
   }, [monthRequested]);
@@ -92,8 +95,23 @@ const ExpensesPage = () => {
     }
   };
 
-  const handleAddExpense = async () => {
+  const handleChangeExpenses = async () => {
     await fetchUserExpenses();
+  };
+
+  const calculateTotal = () => {
+    let total = selectedExpenses.reduce(
+      (accumulator, current) => accumulator + +current.amount,
+      0
+    );
+    return total;
+  };
+
+  const rerenderList = () => {
+    if (selectionGraph === "List") {
+      setSelectionGraph("Graph");
+      setSelectionGraph("List");
+    }
   };
 
   if (isLoading) {
@@ -104,6 +122,7 @@ const ExpensesPage = () => {
     );
   }
 
+  calculateTotal();
   return (
     <div className="expense-page-container">
       <div className="selection-container">
@@ -144,14 +163,44 @@ const ExpensesPage = () => {
             No hay gastos para el mes seleccionado
           </p>
         ) : (
-          <Graph expenses={selectedExpenses} />
+          <div className="graph-container">
+            <div className="graph-list-selector">
+              <h4
+                className={selectionGraph === "Graph" ? "selected-option" : ""}
+                onClick={() => setSelectionGraph("Graph")}
+              >
+                Graph
+              </h4>
+              <h4
+                className={selectionGraph === "List" ? "selected-option" : ""}
+                onClick={() => setSelectionGraph("List")}
+              >
+                List
+              </h4>
+            </div>
+            {selectionGraph === "Graph" ? (
+              <div className="graph-subcontainer">
+                <Graph expenses={selectedExpenses} />
+                <h3>{`Total: $${calculateTotal()}`}</h3>
+              </div>
+            ) : (
+              <div className="list-container">
+                <ExpensesList
+                  expenses={selectedExpenses}
+                  userUID={uid}
+                  monthYear={monthRequested}
+                  updateList={handleChangeExpenses}
+                />
+              </div>
+            )}
+          </div>
         )}
         <div className="form-add-main-container">
           <FormAddExpense
             monthYear={monthRequested}
             userUID={uid}
             expensesSelected={selectedExpenses}
-            updateExpenseLocal={handleAddExpense}
+            updateExpenseLocal={handleChangeExpenses}
           />
         </div>
       </div>

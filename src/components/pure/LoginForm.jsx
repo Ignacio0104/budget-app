@@ -34,7 +34,7 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("This field is required!"),
 });
 
-const LoginForm = ({ toogleLogin }) => {
+const LoginForm = ({ toogleLogin, setError }) => {
   const [loginRequest, setLoginRequest] = useState({ email: "", password: "" });
   const [passwordVisible, setPasswordVisible] = useState("password");
   const [isLoading, setisLoading] = useState(false);
@@ -71,7 +71,7 @@ const LoginForm = ({ toogleLogin }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setError({ open: true, error: error });
       });
   };
 
@@ -84,7 +84,7 @@ const LoginForm = ({ toogleLogin }) => {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        setError({ open: true, error: error });
       })
       .finally(setisLoading(false));
   };

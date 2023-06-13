@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import "./LoginPage.css";
 import LoginForm from "../pure/LoginForm";
 import { Link } from "react-router-dom";
+import { Alert, Snackbar } from "@mui/material";
+import { TransitionDown } from "../utils/snackBarAnimations";
 
 const LoginPage = ({ handleLogin }) => {
+  const [modalError, setModalError] = useState({ open: false, error: "" });
   return (
     <div className="landing-container">
       <div className="message-container">
@@ -18,7 +21,7 @@ const LoginPage = ({ handleLogin }) => {
         <div className="division-line"></div>
         <div className="login-container">
           <h4>Ingresa</h4>
-          <LoginForm toogleLogin={handleLogin} />
+          <LoginForm toogleLogin={handleLogin} setError={setModalError} />
         </div>
         <div className="forgot-register-container">
           <Link to={"/resetPassword"} className="forgot-link">
@@ -29,6 +32,17 @@ const LoginPage = ({ handleLogin }) => {
           </Link>
         </div>
       </div>
+      <Snackbar
+        open={modalError.open}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        TransitionComponent={TransitionDown}
+        onClose={() => setModalError({ ...modalError, open: false, error: "" })}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {modalError.error}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
