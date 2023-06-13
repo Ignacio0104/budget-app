@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./ExpensesList.css";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 
@@ -23,27 +29,36 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
     confirm: false,
     index: -1,
   });
+  const [isLoading, setIsLoading] = useState(false);
   const db = getFirestore(app);
-  const handleDelete = (i) => {
-    setConfirmDelete({ ...confirmDelete, index: i });
-    setModalOpen(true);
-  };
-
-  const deleteItemDb = async () => {
-    expenses.splice(confirmDelete.index, 1);
-    await setDoc(
-      doc(db, "expenses", userUID),
-      { [monthYear.year]: { [monthYear.month]: expenses } },
-      { merge: true }
-    );
-    updateList();
-  };
-
   useEffect(() => {
     if (confirmDelete.confirm) {
       deleteItemDb();
     }
   }, [confirmDelete]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [expenses]);
+
+  const handleDelete = (i) => {
+    if (!isLoading) {
+      setConfirmDelete({ ...confirmDelete, index: i });
+      setModalOpen(true);
+    }
+  };
+
+  const deleteItemDb = async () => {
+    setIsLoading(true);
+    let expensesCopy = [...expenses];
+    expensesCopy.splice(confirmDelete.index, 1);
+    await setDoc(
+      doc(db, "expenses", userUID),
+      { [monthYear.year]: { [monthYear.month]: expensesCopy } },
+      { merge: true }
+    );
+    updateList();
+  };
 
   const closeModal = (boolean) => {
     setModalOpen(false);
@@ -58,10 +73,14 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
           <div className="amount-trash-container">
             <p>${exp.amount}</p>
             <div
-              className="trash-icon-container"
+              className="action-icon-container"
               onClick={() => handleDelete(index)}
             >
-              <DeleteIcon color="warning" />
+              {isLoading & (index === confirmDelete.index) ? (
+                <CircularProgress />
+              ) : (
+                <DeleteIcon color="warning" />
+              )}
             </div>
           </div>
         </div>

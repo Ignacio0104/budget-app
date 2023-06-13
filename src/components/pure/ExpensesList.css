@@ -15,6 +15,12 @@
     align-items: center;
 }
 
+.action-icon-container span{
+   height: 20px !important;
+   width: 20px !important;
+   margin-left: 5px;
+}
+
 .button-confirmation-container{
     margin-top: 20px;
 }

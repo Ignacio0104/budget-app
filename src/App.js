@@ -18,6 +18,7 @@ export const AppContext = createContext(null);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const auth = getAuth();
 
   const toogleLoggedIn = () => {
@@ -26,6 +27,7 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsLoggedIn(user);
+      setIsInitialRender(false);
     });
 
     return () => {
@@ -34,10 +36,10 @@ function App() {
   }, [auth]);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (!isInitialRender) {
       setIsLoading(false);
-    }, 3000);
-  }, []);
+    }
+  }, [isLoggedIn]);
 
   return (
     <AppContext.Provider value={{ userLoggedIn: isLoggedIn }}>
