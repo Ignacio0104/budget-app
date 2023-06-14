@@ -1,0 +1,19 @@
+.main-goal-add-container{
+    display: flex;
+    width: 80vw;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.goal-title-container, .goal-total-container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.goal-currency-container{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}

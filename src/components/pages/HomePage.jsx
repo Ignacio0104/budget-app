@@ -1,5 +1,7 @@
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -25,17 +27,12 @@ const HomePage = () => {
   //sPD5Hvs6xXgIWmDcIQlK2dBd3B12
 
   const fetchUserData = async () => {
-    const docRef = collection(db, "expenses");
-    const goalsDocRef = collection(db, "goals");
-    const queryString = query(docRef, where("userUID", "==", user.uid));
-    const expensesSnapshot = await getDocs(queryString);
-    const goalsQueryString = query(
-      goalsDocRef,
-      where("userUID", "==", user.uid)
-    );
-    const goalsSnapshot = await getDocs(goalsQueryString);
-    setExpenses(expensesSnapshot.docs);
-    setGoals(goalsSnapshot.docs);
+    const docRef = doc(db, "expenses", user.uid);
+    const goalsDocRef = doc(db, "goals", user.uid);
+    const expensesSnapshot = await getDoc(docRef);
+    const goalsSnapshot = await getDoc(goalsDocRef);
+    setExpenses(expensesSnapshot.data());
+    setGoals(goalsSnapshot?.data());
   };
   useEffect(() => {
     fetchUserData();
@@ -43,10 +40,10 @@ const HomePage = () => {
 
   return (
     <div className="home-main-contaner">
-      <Link to={"/expenses"}>
+      <Link to={"/expenses"} state={{ userUID: user.uid }}>
         <ExpensesCard expenses={expenses} />
       </Link>
-      <Link to={"/goals"}>
+      <Link to={"/goals"} state={{ userUID: user.uid }}>
         <GoalsCard goals={goals} />
       </Link>
       <Link to={"/simulation"}>

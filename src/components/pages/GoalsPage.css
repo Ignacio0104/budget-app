@@ -1,8 +1,10 @@
-.expenses-card{
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
+.goal-form-toggle{
     display: flex;
-    align-items: center;
     margin: auto;
-    margin-top: 30px;
+    margin-top: 20px;
     background: rgba(255, 255, 255, 0.48);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -10,16 +12,8 @@
     -webkit-backdrop-filter: blur(6.8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 10px;
-    width: 90vw;
     cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    letter-spacing: 1px;
+    font-size: 20px;
 }
-
-.expenses-card:hover{
-    background: rgba(214, 214, 214, 0.48);
-}
-
-.wallet-icon{
-    height: 80px;
-    margin-right: 20px;
-}
-

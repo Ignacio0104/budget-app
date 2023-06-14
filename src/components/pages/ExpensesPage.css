@@ -99,6 +99,11 @@
     margin-block-start: 0em;  
 }
 
+.graph-subcontainer h3{
+    display: flex;
+    justify-content: center;
+}
+
 .selected-option{
     background: rgba(255, 255, 255, 0.48);
     border-radius: 10px;

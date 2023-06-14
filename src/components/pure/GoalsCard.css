@@ -1,4 +1,4 @@
-.no-goals-card{
+.goals-card{
     display: flex;
     align-items: center;
     margin: auto;
@@ -14,7 +14,7 @@
     cursor: pointer;
 }
 
-.no-goals-card:hover{
+.goals-card:hover{
     background: rgba(214, 214, 214, 0.48);
 }
 
