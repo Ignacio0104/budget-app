@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
 .main-goal-add-container{
     display: flex;
     width: 80vw;
@@ -16,4 +19,40 @@
     width: 100%;
     justify-content: space-around;
     align-items: center;
+}
+
+.upload-icon{
+    height: 20px;
+}
+.goal-image-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upload-button{
+    display: flex;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    justify-content: space-around;
+    letter-spacing: 1px;
+    width: 60%;
+    padding: 10px 10px;
+    background: rgba(255, 255, 255, 0.48);
+}
+
+.image-selected-container{
+    margin: auto;
+    height: 90%;
+    width: 90%;
+    display: flex;
+}
+
+.image-selected-container img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
