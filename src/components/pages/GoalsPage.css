@@ -17,3 +17,47 @@
     letter-spacing: 1px;
     font-size: 20px;
 }
+
+.goal-cards-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 20px;
+}
+.goal-card{
+    display: flex;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.48);
+    border-radius: 20px;
+    width: 90vw;
+    margin: auto;
+    height: fit-content;
+    padding: 10px;
+}
+
+.goal-card-image-container{
+   height: 80px;
+   width: 80px;
+   margin-right: 20px;
+}
+
+.goal-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.goal-text-container{
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 1px;
+}
+
+.goal-text-container h3{
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+
+.percentage-goal-card{
+    flex-basis: 100%;
+}

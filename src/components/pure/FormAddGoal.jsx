@@ -7,8 +7,9 @@ import "./FormAddGoal.css";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import uploadIcon from "../../assets/images/upload-icon.png";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { app } from "../../firebase/fibaseConfig";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const goalSchema = yup.object().shape({
   description: yup
@@ -33,31 +34,34 @@ const FormAddGoal = () => {
   const location = useLocation();
   const inputRef = useRef(null);
   const storage = getStorage(app);
-
-  useEffect(() => {
-    //console.log(goalToSubmit);
-  }, [goalToSubmit]);
+  const db = getFirestore(app);
+  const userUID = location.state.userUID;
 
   useEffect(() => {
     console.log(selectedImage);
   }, [selectedImage]);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     inputRef.current.click();
   };
 
   const handleFileChange = (event) => {
     const imageRegex = /\.(jpe?g|png|gif|bmp|ico|svg)$/i;
     const fileObj = event.target.files && event.target.files[0];
+
     if (!fileObj || !imageRegex.test(fileObj.name)) {
       return;
     } else {
       const reader = new FileReader();
       reader.onload = () => {
-        setSelectedImage({ ...selectedImage, file: reader.result });
+        setSelectedImage({
+          ...selectedImage,
+          file: reader.result,
+          url: event.target.files[0],
+        });
       };
       reader.readAsDataURL(fileObj);
-      setSelectedImage({ ...selectedImage, url: event.target.files[0] });
     }
   };
 
@@ -66,34 +70,39 @@ const FormAddGoal = () => {
   };
 
   const updloadFile = () => {
-    const storageRef = ref(
-      storage,
-      `${location.state.userUID}/${goalToSubmit.description}`
-    );
+    const storageRef = ref(storage, `${userUID}/${goalToSubmit.description}`);
     uploadBytes(storageRef, selectedImage.url).then((snapshot) => {
-      console.log(snapshot);
+      getDownloadURL(storageRef).then((data) =>
+        setGoalToSubmit({ ...goalToSubmit, image: data })
+      );
     });
   };
 
   const handleGoalSubmit = async (values, { resetForm }) => {
-    setIsSubmitting(true);
-    // let goal = {
-    //   [goalToSubmit.description]: {
-    //     [monthYear.month]: [...expensesSelected, expenseToSubmit],
-    //   },
-    // };
-    // await setDoc(doc(db, "expenses", userUID), expense, { merge: true });
-    // updateExpenseLocal();
-    // setExpenseToSubmit({
-    //   ...expenseToSubmit,
-    //   date: `${monthYear.year}-${
-    //     monthYear.month < 10 ? "0" + monthYear.month : monthYear.month
-    //   }-01`,
-    //   amount: 1,
-    //   description: "",
-    // });
-    // setisSubmitting(false);
-    // resetForm();
+    if (!isSubmitting) {
+      setIsSubmitting(true);
+      updloadFile();
+      let goal = {
+        [goalToSubmit.description]: {
+          total: goalToSubmit.total,
+          currency: goalToSubmit.currency,
+          image: goalToSubmit.image,
+        },
+      };
+      await setDoc(doc(db, "goals", userUID), goal, {
+        merge: true,
+      });
+      setGoalToSubmit({
+        ...goalToSubmit,
+        description: "",
+        total: 0,
+        currency: "pesos",
+        image: "",
+      });
+      setSelectedImage({ ...selectedImage, url: "", file: "" });
+      setIsSubmitting(false);
+      resetForm();
+    }
   };
   return (
     <div className="main-goal-add-container">
@@ -134,7 +143,7 @@ const FormAddGoal = () => {
             </div>
             <div className="goal-image-container">
               <label>
-                {goalToSubmit.image === "" ? (
+                {selectedImage.file === "" ? (
                   "Sin imagen"
                 ) : (
                   <div className="image-selected-container">
@@ -149,7 +158,7 @@ const FormAddGoal = () => {
                 onChange={handleFileChange}
                 accept="image/*"
               />
-              <button className="upload-button" onClick={handleClick}>
+              <button className="upload-button" onClick={(e) => handleClick(e)}>
                 Subir imagen
                 <img
                   className="upload-icon"
@@ -169,8 +178,6 @@ const FormAddGoal = () => {
           </Form>
         )}
       </Formik>
-
-      <button onClick={updloadFile}>Test</button>
     </div>
   );
 };
