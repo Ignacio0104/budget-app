@@ -1,15 +1,18 @@
 import React, { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import "./Navbar.css";
+import useFirebase from "../../hooks/useFirebase";
 
 const Navbar = () => {
   const [openResponsive, setOpenResponsive] = useState(false);
+  const { auth } = useFirebase();
+  const navigate = useNavigate();
   const TestLogout = () => {
-    const auth = getAuth();
     signOut(auth);
+    navigate("/loginPage");
   };
 
   const toggleMenu = () => {
@@ -38,6 +41,7 @@ const Navbar = () => {
             <Link to={"/expenses"}>Gastos</Link>
             <Link to={"/goals"}>Objetivos</Link>
             <Link to={"/simulation"}>Simulaciones</Link>
+            <button onClick={() => TestLogout()}>Log out</button>
           </span>
         </div>
       </div>

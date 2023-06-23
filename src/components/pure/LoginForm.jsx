@@ -56,7 +56,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
           toogleLogin();
-          navigate("/");
+          navigate("/home");
         } else {
           const userCollectionRef = collection(db, "users");
           const nameArray = result?.user?.displayName?.split(/\s+/);
@@ -81,7 +81,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
     signInWithEmailAndPassword(auth, loginRequest.email, loginRequest.password)
       .then((userCredential) => {
         toogleLogin();
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         setError({ open: true, error: error });

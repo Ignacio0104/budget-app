@@ -12,18 +12,20 @@ import Loader from "./components/pure/Loader";
 import ExpensesPage from "./components/pages/ExpensesPage";
 import GoalsPage from "./components/pages/GoalsPage";
 import SimulationPage from "./components/pages/SimulationPage";
+import useFirebase from "./hooks/useFirebase";
 
 export const AppContext = createContext(null);
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
-  const auth = getAuth();
+  const { auth, checkLogin } = useFirebase();
 
   const toogleLoggedIn = () => {
     setIsLoggedIn(auth.currentUser);
   };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsLoggedIn(user);
@@ -31,7 +33,7 @@ function App() {
     });
 
     return () => {
-      unsubscribe(); // Cleanup the listener when the component unmounts
+      unsubscribe();
     };
   }, [auth]);
 
@@ -60,7 +62,13 @@ function App() {
             <Route path="/simulation" element={<SimulationPage />}></Route>
             <Route
               path="/"
-              element={getAuth().currentUser ? <HomePage /> : <LoginPage />}
+              element={
+                auth.currentUser ? (
+                  <HomePage />
+                ) : (
+                  <LoginPage handleLogin={toogleLoggedIn} />
+                )
+              }
             ></Route>
           </Routes>
         </BrowserRouter>

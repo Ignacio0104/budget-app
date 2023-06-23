@@ -67,7 +67,7 @@
     position: absolute;
     display: grid;
     grid-template-columns: 0.5fr 1fr;
-    grid-template-rows: repeat(2, 100px);
+    grid-template-rows: 100px 50px;
     left: 2%;
     z-index: 100;
     min-height: 90vh;
@@ -82,4 +82,8 @@
     font-size: 20px;
     display: flex;
     justify-content: center;
+}
+
+.deposits-container{
+    grid-column: span 2;
 }

@@ -5,12 +5,13 @@ import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { useLocation } from "react-router-dom";
 import { CircularProgress, LinearProgress } from "@mui/material";
+import DepositsList from "../pure/DepositsList";
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [goals, setGoals] = useState([]);
-  const [selectedGoal, setSelectedGoal] = useState("");
+  const [selectedGoal, setSelectedGoal] = useState(null);
   const db = getFirestore(app);
   const location = useLocation();
   let userUID = location.state.userUID;
@@ -36,11 +37,12 @@ const GoalsPage = () => {
     }
   }, [creationFormOpen]);
 
-  const handleChangeSelection = (string) => {
-    if (selectedGoal === "") {
-      setSelectedGoal(string);
-    } else {
-      setSelectedGoal("");
+  const handleChangeSelection = (goal) => {
+    if (selectedGoal === null) {
+      setSelectedGoal(goal);
+    }
+    if (goal === null) {
+      setSelectedGoal(null);
     }
   };
   const getCurrency = (goal) => {
@@ -95,9 +97,9 @@ const GoalsPage = () => {
             <div
               key={i}
               className={`goal-card ${
-                selectedGoal === goal.key ? "selected-card" : ""
+                selectedGoal?.key === goal.key ? "selected-card" : ""
               }`}
-              onClick={() => handleChangeSelection(goal.key)}
+              onClick={() => handleChangeSelection(goal)}
             >
               <div className="goal-card-image-container">
                 <img src={goal.image} alt="goal"></img>
@@ -117,10 +119,11 @@ const GoalsPage = () => {
                 />
               </div>
               {selectedGoal ? (
-                <div className="back-button-container">
-                  <button onClick={() => handleChangeSelection("")}>
-                    Volver
-                  </button>
+                <div className="deposits-container">
+                  <DepositsList
+                    deposits={goal.deposits}
+                    toogleSelected={handleChangeSelection}
+                  />
                 </div>
               ) : null}
             </div>

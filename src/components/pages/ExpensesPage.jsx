@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./ExpensesPage.css";
-import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { app } from "../../firebase/fibaseConfig";
-import {
-  Alert,
-  CircularProgress,
-  IconButton,
-  Slide,
-  Snackbar,
-} from "@mui/material";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
 import Graph from "../pure/Graph";
 import { TransitionDown } from "../utils/snackBarAnimations";
-import CloseIcon from "@mui/icons-material/Close";
 import ExpensesList from "../pure/ExpensesList";
+import useFirebase from "../../hooks/useFirebase";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
@@ -28,9 +19,8 @@ const ExpensesPage = () => {
   const [monthExpensesLength, setMonthExpensesLength] = useState(0);
   const [modalError, setModalError] = useState({ open: false, error: "" });
   const [selectionGraph, setSelectionGraph] = useState("Graph");
-  const auth = getAuth();
-  const uid = auth.currentUser.uid;
-  const db = getFirestore(app);
+
+  const { fetchUserData, uid } = useFirebase("expenses");
 
   useEffect(() => {
     const fetchData = () => {
@@ -59,21 +49,13 @@ const ExpensesPage = () => {
   }, [selectedExpenses]);
 
   const fetchUserExpenses = async () => {
-    const docRef = doc(db, "expenses", uid);
-    const docSnap = await getDoc(docRef);
-    docSnap.data();
-    try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        let data = docSnap.data();
-        setExpenses(data);
-      } else {
-        console.log("Document does not exist");
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setModalError({ ...modalError, open: true, error: error });
+    let res = await fetchUserData("expenses");
+    if (res.response === "OK") {
+      setExpenses(res.data);
+    } else {
+      setModalError({ open: true, error: res.data });
     }
+    setIsLoading(false);
   };
 
   const handleChange = (input, value) => {
