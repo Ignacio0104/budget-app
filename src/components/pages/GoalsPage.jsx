@@ -7,9 +7,10 @@ import { useLocation } from "react-router-dom";
 import { CircularProgress, LinearProgress } from "@mui/material";
 
 const GoalsPage = () => {
-  const [creationFormOpen, setCreationFormOpen] = useState(true);
+  const [creationFormOpen, setCreationFormOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [goals, setGoals] = useState([]);
+  const [selectedGoal, setSelectedGoal] = useState("");
   const db = getFirestore(app);
   const location = useLocation();
   let userUID = location.state.userUID;
@@ -21,28 +22,27 @@ const GoalsPage = () => {
       key,
       ...goalsSnapshot?.data()[key],
     }));
+    setIsFetching(false);
     setGoals(goalsToArray);
   };
   useEffect(() => {
     fetchUserData();
-    setIsFetching(false);
   }, []);
 
   useEffect(() => {
-    // console.log(goals);
-  }, [goals]);
+    if (!creationFormOpen) {
+      setIsFetching(true);
+      fetchUserData();
+    }
+  }, [creationFormOpen]);
 
-  const submitItem = async () => {
-    let itemToAdd = {
-      Gol: {
-        deposits: { "2023-10-12": 2000 },
-      },
-    };
-    await setDoc(doc(db, "goals", userUID), itemToAdd, {
-      merge: true,
-    });
+  const handleChangeSelection = (string) => {
+    if (selectedGoal === "") {
+      setSelectedGoal(string);
+    } else {
+      setSelectedGoal("");
+    }
   };
-
   const getCurrency = (goal) => {
     switch (goal.currency) {
       case "Pesos":
@@ -85,39 +85,58 @@ const GoalsPage = () => {
 
   return (
     <div>
-      <div className="goal-cards-container">
-        {goals.map((goal) => (
-          <div className="goal-card">
-            <div className="goal-card-image-container">
-              <img src={goal.image} alt="goal"></img>
+      {creationFormOpen ? (
+        <div className="goal-creation-container">
+          {creationFormOpen ? <FormAddGoal /> : null}
+        </div>
+      ) : goals.length > 0 ? (
+        <div className="goal-cards-container">
+          {goals.map((goal, i) => (
+            <div
+              key={i}
+              className={`goal-card ${
+                selectedGoal === goal.key ? "selected-card" : ""
+              }`}
+              onClick={() => handleChangeSelection(goal.key)}
+            >
+              <div className="goal-card-image-container">
+                <img src={goal.image} alt="goal"></img>
+              </div>
+              <div className="goal-text-container">
+                <h3>{goal.key}</h3>
+                <h4>
+                  {getCurrency(goal)}
+                  {goal.total}
+                </h4>
+              </div>
+              <div className="percentage-goal-card">
+                <LinearProgress
+                  color="secondary"
+                  variant="determinate"
+                  value={calculatePercentaje(goal)}
+                />
+              </div>
+              {selectedGoal ? (
+                <div className="back-button-container">
+                  <button onClick={() => handleChangeSelection("")}>
+                    Volver
+                  </button>
+                </div>
+              ) : null}
             </div>
-            <div className="goal-text-container">
-              <h3>{goal.key}</h3>
-              <h4>
-                {getCurrency(goal)}
-                {goal.total}
-              </h4>
-            </div>
-            <div className="percentage-goal-card">
-              <LinearProgress
-                color="secondary"
-                variant="determinate"
-                value={calculatePercentaje(goal)}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="goal-creation-container">
-        <button
-          className="goal-form-toggle"
-          onClick={() => setCreationFormOpen(!creationFormOpen)}
-        >
-          Crear objetivo
-        </button>
-        {creationFormOpen ? <FormAddGoal /> : null}
-      </div>
-      <button onClick={submitItem}>Test</button>
+          ))}
+        </div>
+      ) : (
+        <div className="no-results-container">
+          <h3>No se encontraron objetivos</h3>
+        </div>
+      )}
+      <button
+        className="goal-form-toggle"
+        onClick={() => setCreationFormOpen(!creationFormOpen)}
+      >
+        {creationFormOpen ? "Cerrar Formulario" : "Crear Objetivo"}
+      </button>
     </div>
   );
 };

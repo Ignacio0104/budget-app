@@ -69,24 +69,23 @@ const FormAddGoal = () => {
     setGoalToSubmit({ ...goalToSubmit, [field]: value });
   };
 
-  const updloadFile = () => {
+  const updloadFile = async () => {
     const storageRef = ref(storage, `${userUID}/${goalToSubmit.description}`);
-    uploadBytes(storageRef, selectedImage.url).then((snapshot) => {
-      getDownloadURL(storageRef).then((data) =>
-        setGoalToSubmit({ ...goalToSubmit, image: data })
-      );
-    });
+    const snapshot = await uploadBytes(storageRef, selectedImage.url);
+    const data = await getDownloadURL(storageRef);
+    setGoalToSubmit({ ...goalToSubmit, image: data });
+    return data;
   };
 
   const handleGoalSubmit = async (values, { resetForm }) => {
     if (!isSubmitting) {
       setIsSubmitting(true);
-      updloadFile();
+      const imageURL = await updloadFile();
       let goal = {
         [goalToSubmit.description]: {
           total: goalToSubmit.total,
           currency: goalToSubmit.currency,
-          image: goalToSubmit.image,
+          image: imageURL,
         },
       };
       await setDoc(doc(db, "goals", userUID), goal, {

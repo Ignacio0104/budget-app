@@ -61,3 +61,25 @@
 .percentage-goal-card{
     flex-basis: 100%;
 }
+
+.selected-card{
+    background: rgb(216, 214, 214);
+    position: absolute;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: repeat(2, 100px);
+    left: 2%;
+    z-index: 100;
+    min-height: 90vh;
+}
+
+.percentage-goal-card{
+    grid-column: span 2;
+}
+
+.no-results-container{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
