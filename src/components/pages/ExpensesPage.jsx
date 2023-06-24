@@ -20,7 +20,7 @@ const ExpensesPage = () => {
   const [modalError, setModalError] = useState({ open: false, error: "" });
   const [selectionGraph, setSelectionGraph] = useState("Graph");
 
-  const { fetchUserData, uid } = useFirebase("expenses");
+  const { fetchUserData, uid } = useFirebase();
 
   useEffect(() => {
     const fetchData = () => {
@@ -34,6 +34,7 @@ const ExpensesPage = () => {
     setMonthExpensesLength(0);
     if (!isInitialRender) {
       updateInformation();
+      calculateTotal();
       setIsLoading(false);
     }
   }, [expenses]);
@@ -104,7 +105,6 @@ const ExpensesPage = () => {
     );
   }
 
-  calculateTotal();
   return (
     <div className="expense-page-container">
       <div className="selection-container">

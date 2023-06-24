@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
+import useFirebase from "../../hooks/useFirebase";
 
 const style = {
   position: "absolute",
@@ -30,10 +31,11 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
     index: -1,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const db = getFirestore(app);
+  const { deleteItemDb } = useFirebase();
+
   useEffect(() => {
     if (confirmDelete.confirm) {
-      deleteItemDb();
+      deleteExpense();
     }
   }, [confirmDelete]);
 
@@ -48,15 +50,14 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
     }
   };
 
-  const deleteItemDb = async () => {
+  const deleteExpense = async () => {
     setIsLoading(true);
     let expensesCopy = [...expenses];
     expensesCopy.splice(confirmDelete.index, 1);
-    await setDoc(
-      doc(db, "expenses", userUID),
-      { [monthYear.year]: { [monthYear.month]: expensesCopy } },
-      { merge: true }
-    );
+    deleteItemDb("expenses", {
+      [monthYear.year]: { [monthYear.month]: expensesCopy },
+    });
+
     updateList();
   };
 

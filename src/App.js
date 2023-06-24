@@ -20,7 +20,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
-  const { auth, checkLogin } = useFirebase();
+  const { auth } = useFirebase();
 
   const toogleLoggedIn = () => {
     setIsLoggedIn(auth.currentUser);

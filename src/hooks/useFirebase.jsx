@@ -1,9 +1,9 @@
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
 
-const useFirebase = (database) => {
+const useFirebase = () => {
   const [expenses, setExpenses] = useState([]);
   const db = getFirestore(app);
   const auth = getAuth();
@@ -30,7 +30,11 @@ const useFirebase = (database) => {
     }
   };
 
-  return { expenses, db, auth, uid, user, fetchUserData };
+  const deleteItemDb = async (dbName, newObject) => {
+    await setDoc(doc(db, dbName, uid), newObject, { merge: true });
+  };
+
+  return { expenses, db, auth, uid, user, fetchUserData, deleteItemDb };
 };
 
 export default useFirebase;
