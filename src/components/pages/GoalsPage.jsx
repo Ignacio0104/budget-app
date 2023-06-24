@@ -6,34 +6,32 @@ import { app } from "../../firebase/fibaseConfig";
 import { useLocation } from "react-router-dom";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import DepositsList from "../pure/DepositsList";
+import useFirebase from "../../hooks/useFirebase";
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
-  const db = getFirestore(app);
-  const location = useLocation();
-  let userUID = location.state.userUID;
+  const { fetchUserData } = useFirebase();
 
-  const fetchUserData = async () => {
-    const goalsDocRef = doc(db, "goals", userUID);
-    const goalsSnapshot = await getDoc(goalsDocRef);
-    const goalsToArray = Object.keys(goalsSnapshot?.data()).map((key) => ({
+  const fetchGoals = async () => {
+    let response = await fetchUserData("goals");
+    const goalsToArray = Object.keys(response.data).map((key) => ({
       key,
-      ...goalsSnapshot?.data()[key],
+      ...response.data[key],
     }));
     setIsFetching(false);
     setGoals(goalsToArray);
   };
   useEffect(() => {
-    fetchUserData();
+    fetchGoals();
   }, []);
 
   useEffect(() => {
     if (!creationFormOpen) {
       setIsFetching(true);
-      fetchUserData();
+      fetchGoals();
     }
   }, [creationFormOpen]);
 

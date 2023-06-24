@@ -4,7 +4,6 @@ import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
 
 const useFirebase = () => {
-  const [expenses, setExpenses] = useState([]);
   const db = getFirestore(app);
   const auth = getAuth();
   const user = auth?.currentUser;
@@ -19,7 +18,6 @@ const useFirebase = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           let data = docSnap.data();
-          setExpenses(data);
           return { response: "OK", data: data };
         } else {
           return { response: "OK", data: [] };
@@ -34,7 +32,7 @@ const useFirebase = () => {
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
 
-  return { expenses, db, auth, uid, user, fetchUserData, updateItemDb };
+  return { db, auth, uid, user, fetchUserData, updateItemDb };
 };
 
 export default useFirebase;
