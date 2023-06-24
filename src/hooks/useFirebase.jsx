@@ -2,12 +2,14 @@ import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const useFirebase = () => {
   const db = getFirestore(app);
   const auth = getAuth();
   const user = auth?.currentUser;
   const uid = auth?.currentUser?.uid;
+  const storage = getStorage(app);
 
   const fetchUserData = async (databaseName) => {
     if (auth) {
@@ -32,7 +34,14 @@ const useFirebase = () => {
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
 
-  return { db, auth, uid, user, fetchUserData, updateItemDb };
+  const updloadFile = async (goalToSubmit, selectedImage) => {
+    const storageRef = ref(storage, `${uid}/${goalToSubmit.description}`);
+    const snapshot = await uploadBytes(storageRef, selectedImage.url);
+    const data = await getDownloadURL(storageRef);
+    return data;
+  };
+
+  return { db, auth, uid, user, fetchUserData, updateItemDb, updloadFile };
 };
 
 export default useFirebase;

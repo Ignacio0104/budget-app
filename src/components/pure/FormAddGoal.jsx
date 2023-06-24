@@ -10,6 +10,7 @@ import uploadIcon from "../../assets/images/upload-icon.png";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { app } from "../../firebase/fibaseConfig";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import useFirebase from "../../hooks/useFirebase";
 
 const goalSchema = yup.object().shape({
   description: yup
@@ -31,11 +32,9 @@ const FormAddGoal = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState({ url: "", file: "" });
-  const location = useLocation();
   const inputRef = useRef(null);
-  const storage = getStorage(app);
-  const db = getFirestore(app);
-  const userUID = location.state.userUID;
+
+  const { updateItemDb, updloadFile } = useFirebase();
 
   useEffect(() => {
     console.log(selectedImage);
@@ -69,18 +68,10 @@ const FormAddGoal = () => {
     setGoalToSubmit({ ...goalToSubmit, [field]: value });
   };
 
-  const updloadFile = async () => {
-    const storageRef = ref(storage, `${userUID}/${goalToSubmit.description}`);
-    const snapshot = await uploadBytes(storageRef, selectedImage.url);
-    const data = await getDownloadURL(storageRef);
-    setGoalToSubmit({ ...goalToSubmit, image: data });
-    return data;
-  };
-
   const handleGoalSubmit = async (values, { resetForm }) => {
     if (!isSubmitting) {
       setIsSubmitting(true);
-      const imageURL = await updloadFile();
+      const imageURL = await updloadFile(goalToSubmit, selectedImage);
       let goal = {
         [goalToSubmit.description]: {
           total: goalToSubmit.total,
@@ -88,9 +79,7 @@ const FormAddGoal = () => {
           image: imageURL,
         },
       };
-      await setDoc(doc(db, "goals", userUID), goal, {
-        merge: true,
-      });
+      await updateItemDb("goals", goal);
       setGoalToSubmit({
         ...goalToSubmit,
         description: "",
