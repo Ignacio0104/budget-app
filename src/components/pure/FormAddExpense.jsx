@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { CircularProgress } from "@mui/material";
+import useFirebase from "../../hooks/useFirebase";
 
 const expenseSchema = yup.object().shape({
   date: yup.date().required("This field is required!"),
@@ -27,7 +28,6 @@ const expenseSchema = yup.object().shape({
 
 const FormAddExpense = ({
   monthYear,
-  userUID,
   expensesSelected,
   updateExpenseLocal,
 }) => {
@@ -40,6 +40,7 @@ const FormAddExpense = ({
     description: "",
   });
   const [isSubmitting, setisSubmitting] = useState(false);
+  const { updateItemDb } = useFirebase();
   const calculateMonth = () => {
     switch (+monthYear.month) {
       case 1:
@@ -75,8 +76,6 @@ const FormAddExpense = ({
     );
   }, [monthYear]);
 
-  const db = getFirestore(app);
-
   const handleSubmit = async (values, { resetForm }) => {
     setisSubmitting(true);
     let expense = {
@@ -84,7 +83,7 @@ const FormAddExpense = ({
         [monthYear.month]: [...expensesSelected, expenseToSubmit],
       },
     };
-    await setDoc(doc(db, "expenses", userUID), expense, { merge: true });
+    await updateItemDb("expenses", expense);
     updateExpenseLocal();
     setExpenseToSubmit({
       ...expenseToSubmit,

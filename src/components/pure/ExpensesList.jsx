@@ -8,8 +8,6 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { app } from "../../firebase/fibaseConfig";
 import useFirebase from "../../hooks/useFirebase";
 
 const style = {
@@ -31,7 +29,7 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
     index: -1,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { deleteItemDb } = useFirebase();
+  const { updateItemDb } = useFirebase();
 
   useEffect(() => {
     if (confirmDelete.confirm) {
@@ -54,7 +52,7 @@ const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
     setIsLoading(true);
     let expensesCopy = [...expenses];
     expensesCopy.splice(confirmDelete.index, 1);
-    deleteItemDb("expenses", {
+    updateItemDb("expenses", {
       [monthYear.year]: { [monthYear.month]: expensesCopy },
     });
 

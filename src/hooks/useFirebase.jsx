@@ -30,11 +30,11 @@ const useFirebase = () => {
     }
   };
 
-  const deleteItemDb = async (dbName, newObject) => {
+  const updateItemDb = async (dbName, newObject) => {
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
 
-  return { expenses, db, auth, uid, user, fetchUserData, deleteItemDb };
+  return { expenses, db, auth, uid, user, fetchUserData, updateItemDb };
 };
 
 export default useFirebase;
