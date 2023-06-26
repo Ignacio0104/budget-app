@@ -12,7 +12,7 @@ const depositSchema = yup.object().shape({
     .min(1, "Amount must be greater than 0!"),
 });
 
-const FormAddDeposit = () => {
+const FormAddDeposit = ({ handleUpdate }) => {
   const [depositToSubmit, setDepositToSubmit] = useState({
     amount: 0,
     date: null,
@@ -29,8 +29,12 @@ const FormAddDeposit = () => {
     setDepositToSubmit({ ...depositToSubmit, [field]: value });
   };
 
-  const handleDepositSubmit = () => {
-    console.log(depositToSubmit);
+  const handleDepositSubmit = async (values, { resetForm }) => {
+    setIsSubmitting(true);
+    await handleUpdate(depositToSubmit);
+    setDepositToSubmit({ amount: 0, date: null });
+    setIsSubmitting(false);
+    resetForm();
   };
   return (
     <div className="main-goal-add-container">

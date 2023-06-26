@@ -13,7 +13,7 @@ const GoalsPage = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
-  const { fetchUserData } = useFirebase();
+  const { fetchUserData, updateItemDb } = useFirebase();
 
   const fetchGoals = async () => {
     let response = await fetchUserData("goals");
@@ -24,6 +24,7 @@ const GoalsPage = () => {
     setIsFetching(false);
     setGoals(goalsToArray);
   };
+
   useEffect(() => {
     fetchGoals();
   }, []);
@@ -33,7 +34,7 @@ const GoalsPage = () => {
       setIsFetching(true);
       fetchGoals();
     }
-  }, [creationFormOpen]);
+  }, [creationFormOpen, selectedGoal]);
 
   const handleChangeSelection = (goal) => {
     if (selectedGoal === null) {
@@ -72,6 +73,18 @@ const GoalsPage = () => {
       return percentage <= 100 ? percentage : 100;
     } else {
       return 0;
+    }
+  };
+
+  const updateGoal = async (goalToUpdate) => {
+    try {
+      await updateItemDb("goals", goalToUpdate);
+      let temporaryCopy = [...goals];
+      let index = temporaryCopy.map((e) => e.key).indexOf(goalToUpdate.key);
+      if (index > -1) temporaryCopy[index] = goalToUpdate;
+      setGoals(temporaryCopy);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -119,8 +132,9 @@ const GoalsPage = () => {
               {selectedGoal ? (
                 <div className="deposits-container">
                   <DepositsList
-                    deposits={goal.deposits}
+                    goal={selectedGoal}
                     toogleSelected={handleChangeSelection}
+                    handleUpdate={updateGoal}
                   />
                 </div>
               ) : null}

@@ -5,11 +5,7 @@ import CustomInput from "./CustomInput";
 import { CircularProgress } from "@mui/material";
 import "./FormAddGoal.css";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import uploadIcon from "../../assets/images/upload-icon.png";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { app } from "../../firebase/fibaseConfig";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import useFirebase from "../../hooks/useFirebase";
 
 const goalSchema = yup.object().shape({
