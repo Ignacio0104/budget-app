@@ -31,7 +31,6 @@ const useFirebase = () => {
   };
 
   const updateItemDb = async (dbName, newObject) => {
-    console.log(newObject);
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
 

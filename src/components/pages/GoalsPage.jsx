@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FormAddGoal from "../pure/FormAddGoal";
 import "./GoalsPage.css";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
-import { app } from "../../firebase/fibaseConfig";
-import { useLocation } from "react-router-dom";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import DepositsList from "../pure/DepositsList";
 import useFirebase from "../../hooks/useFirebase";
@@ -11,18 +8,21 @@ import useFirebase from "../../hooks/useFirebase";
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const { fetchUserData, updateItemDb } = useFirebase();
 
   const fetchGoals = async () => {
+    setIsUpdating(true);
     let response = await fetchUserData("goals");
     const goalsToArray = Object.keys(response.data).map((key) => ({
       key,
       ...response.data[key],
     }));
-    setIsFetching(false);
+
     setGoals(goalsToArray);
+    setIsFetching(false);
   };
 
   useEffect(() => {
@@ -30,11 +30,17 @@ const GoalsPage = () => {
   }, []);
 
   useEffect(() => {
+    setIsUpdating(false);
+    let newGoal = goals.filter((goal) => goal.key === selectedGoal.key);
+    setSelectedGoal(newGoal[0]);
+  }, [goals]);
+
+  useEffect(() => {
     if (!creationFormOpen) {
       setIsFetching(true);
       fetchGoals();
     }
-  }, [creationFormOpen, selectedGoal]);
+  }, [creationFormOpen]);
 
   const handleChangeSelection = (goal) => {
     if (selectedGoal === null) {
@@ -79,10 +85,7 @@ const GoalsPage = () => {
   const updateGoal = async (goalToUpdate) => {
     try {
       await updateItemDb("goals", goalToUpdate);
-      let temporaryCopy = [...goals];
-      let index = temporaryCopy.map((e) => e.key).indexOf(goalToUpdate.key);
-      if (index > -1) temporaryCopy[index] = goalToUpdate;
-      setGoals(temporaryCopy);
+      await fetchGoals();
     } catch (err) {
       console.log(err);
     }
@@ -129,12 +132,13 @@ const GoalsPage = () => {
                   value={calculatePercentaje(goal)}
                 />
               </div>
-              {selectedGoal ? (
+              {selectedGoal?.key === goal.key ? (
                 <div className="deposits-container">
                   <DepositsList
                     goal={selectedGoal}
                     toogleSelected={handleChangeSelection}
                     handleUpdate={updateGoal}
+                    updatingStatus={isUpdating}
                   />
                 </div>
               ) : null}
