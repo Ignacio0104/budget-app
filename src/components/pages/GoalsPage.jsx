@@ -12,7 +12,7 @@ const GoalsPage = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
-  const { fetchUserData, updateItemDb } = useFirebase();
+  const { fetchUserData, updateItemDb, removeField } = useFirebase();
 
   const fetchGoals = async () => {
     let response = await fetchUserData("goals");
@@ -94,6 +94,10 @@ const GoalsPage = () => {
     }
   };
 
+  const deleteGoal = async (goal) => {
+    removeField("goals", goal.key);
+  };
+
   if (isFetching) {
     return (
       <div className="spinner-container">
@@ -155,7 +159,11 @@ const GoalsPage = () => {
 
               {selectedGoal?.key === goal.key ? (
                 <div className="deposits-container">
-                  <DepositsList goal={selectedGoal} handleUpdate={updateGoal} />
+                  <DepositsList
+                    goal={selectedGoal}
+                    handleUpdate={updateGoal}
+                    handleGoalDelete={deleteGoal}
+                  />
                 </div>
               ) : null}
             </div>

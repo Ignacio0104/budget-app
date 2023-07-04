@@ -2,21 +2,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
 
 
-.add-deposit button{
+.add-deposit button, .delete-goal button{
     display: flex;
     margin: auto;
     margin-top: 20px;
-    background: rgba(255, 255, 255, 0.48);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
     backdrop-filter: blur(6.8px);
     -webkit-backdrop-filter: blur(6.8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 10px;
     cursor: pointer;
     font-family: 'Quicksand', sans-serif;
     letter-spacing: 1px;
+
+}
+
+.add-deposit button{
+    background: rgba(255, 255, 255, 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     font-size: 20px;
+}
+
+.delete-goal button{
+    background-color: tomato;
+    color: whitesmoke;
+    font-size: 15px;
+    letter-spacing: 2px;
 }
 
 .no-deposit-container{

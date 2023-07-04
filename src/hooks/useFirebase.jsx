@@ -1,5 +1,12 @@
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  updateDoc,
+  deleteField,
+  FieldValue,
+} from "firebase/firestore";
 import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -34,6 +41,13 @@ const useFirebase = () => {
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
 
+  const removeField = async (dbName, field) => {
+    let docRef = doc(db, dbName, uid);
+    await updateDoc(docRef, {
+      [field]: deleteField(),
+    });
+  };
+
   const updloadFile = async (goalToSubmit, selectedImage) => {
     const storageRef = ref(storage, `${uid}/${goalToSubmit.description}`);
     const snapshot = await uploadBytes(storageRef, selectedImage.url);
@@ -41,7 +55,16 @@ const useFirebase = () => {
     return data;
   };
 
-  return { db, auth, uid, user, fetchUserData, updateItemDb, updloadFile };
+  return {
+    db,
+    auth,
+    uid,
+    user,
+    fetchUserData,
+    updateItemDb,
+    updloadFile,
+    removeField,
+  };
 };
 
 export default useFirebase;

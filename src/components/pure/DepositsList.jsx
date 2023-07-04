@@ -22,28 +22,38 @@ const style = {
   p: 4,
 };
 
-const DepositsList = ({ goal, toogleSelected, handleUpdate }) => {
+const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
   const [showForm, setShowForm] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState({
     confirm: false,
     index: -1,
+    element: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (confirmDelete.confirm) {
-      deleteExpense();
+      if (confirmDelete.element === "deposito") {
+        deleteDeposit();
+      } else {
+        handleGoalDelete(goal);
+      }
     }
-  }, [confirmDelete]);
+  }, [confirmDelete.confirm]);
 
-  const handleDelete = (i) => {
+  const handleDelete = (i, element) => {
     if (!isLoading) {
-      setConfirmDelete({ ...confirmDelete, index: i });
+      setConfirmDelete({ ...confirmDelete, index: i, element: element });
       setModalOpen(true);
     }
   };
 
-  const deleteExpense = async () => {
+  const deleteGoal = (element) => {
+    setConfirmDelete({ ...confirmDelete, element: element });
+    setModalOpen(true);
+  };
+
+  const deleteDeposit = async () => {
     setIsLoading(true);
     let depositsCopy = [...goal.deposits];
     depositsCopy.splice(confirmDelete.index, 1);
@@ -73,34 +83,43 @@ const DepositsList = ({ goal, toogleSelected, handleUpdate }) => {
   return (
     <div>
       <div className="deposit-list-container">
-        {goal.deposits &&
-          goal.deposits.map((goal, index) => (
-            <div className="deposit-item">
-              <p>{goal.date}</p>
-              <p>${goal.amount}</p>
-              <div
-                className="action-icon-container"
-                onClick={() => handleDelete(index)}
-              >
-                {isLoading & (index === confirmDelete.index) ? (
-                  <CircularProgress />
-                ) : (
-                  <DeleteIcon color="warning" />
-                )}
+        {goal.deposits
+          ? goal.deposits.map((goal, index) => (
+              <div key={index} className="deposit-item">
+                <p>{goal.date}</p>
+                <p>${goal.amount}</p>
+                <div
+                  className="action-icon-container"
+                  onClick={() => handleDelete(index, "deposito")}
+                >
+                  {isLoading & (index === confirmDelete.index) ? (
+                    <CircularProgress />
+                  ) : (
+                    <DeleteIcon color="warning" />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          : null}
       </div>
       <div className="no-deposit-container">
-        {(!goal.deposits || goal.deposits.length < 1) && (
+        {!goal.deposits || goal.deposits.length < 1 ? (
           <h2>No hay depositos </h2>
-        )}
+        ) : null}
       </div>
       <div className="add-deposit">
         <button onClick={toggleForm}>
           {showForm ? "Cerrar" : "Crear Deposito"}
         </button>
       </div>
+      {!showForm ? (
+        <div className="delete-goal">
+          <button onClick={() => deleteGoal("objetivo")}>
+            Eliminar Objetivo
+          </button>
+        </div>
+      ) : null}
+
       {showForm ? <FormAddDeposit handleUpdate={updateGoal} /> : null}
       <Modal
         open={modalOpen}
@@ -109,10 +128,11 @@ const DepositsList = ({ goal, toogleSelected, handleUpdate }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Eliminar gasto
+            Eliminar {confirmDelete.element}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            ¿Está seguro de que desea borrar el item seleccionado?
+            ¿Está seguro de que desea borrar el {confirmDelete.element}{" "}
+            seleccionado?
           </Typography>
           <div className="button-confirmation-container">
             <Button onClick={() => closeModal(true)}>Confirmar</Button>
