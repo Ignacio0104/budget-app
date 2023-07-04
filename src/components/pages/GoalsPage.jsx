@@ -4,17 +4,16 @@ import "./GoalsPage.css";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import DepositsList from "../pure/DepositsList";
 import useFirebase from "../../hooks/useFirebase";
+import { ProgressBar } from "react-loader-spinner";
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const { fetchUserData, updateItemDb } = useFirebase();
 
   const fetchGoals = async () => {
-    setIsUpdating(true);
     let response = await fetchUserData("goals");
     const goalsToArray = Object.keys(response.data).map((key) => ({
       key,
@@ -30,9 +29,10 @@ const GoalsPage = () => {
   }, []);
 
   useEffect(() => {
-    setIsUpdating(false);
-    let newGoal = goals.filter((goal) => goal.key === selectedGoal.key);
-    setSelectedGoal(newGoal[0]);
+    if (selectedGoal) {
+      let newGoal = goals.filter((goal) => goal.key === selectedGoal.key);
+      setSelectedGoal(newGoal[0]);
+    }
   }, [goals]);
 
   useEffect(() => {
@@ -66,15 +66,17 @@ const GoalsPage = () => {
   const calculatePercentaje = (goal) => {
     if (goal.deposits) {
       const depositsArray = Object.entries(goal.deposits).map(
-        ([date, value]) => ({
-          date,
-          value,
+        ([index, object]) => ({
+          index,
+          object,
         })
       );
+
       let totalDeposit = depositsArray.reduce(
-        (acc, curr) => acc + curr.value,
+        (acc, curr) => acc + +curr.object.amount,
         0
       );
+
       let percentage = (totalDeposit * 100) / goal.total;
       return percentage <= 100 ? percentage : 100;
     } else {
@@ -127,7 +129,6 @@ const GoalsPage = () => {
               </div>
               <div className="percentage-goal-card">
                 <LinearProgress
-                  color="secondary"
                   variant="determinate"
                   value={calculatePercentaje(goal)}
                 />
@@ -138,7 +139,6 @@ const GoalsPage = () => {
                     goal={selectedGoal}
                     toogleSelected={handleChangeSelection}
                     handleUpdate={updateGoal}
-                    updatingStatus={isUpdating}
                   />
                 </div>
               ) : null}

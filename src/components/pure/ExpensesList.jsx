@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-const ExpensesList = ({ expenses, userUID, monthYear, updateList }) => {
+const ExpensesList = ({ expenses, monthYear, updateList }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState({
     confirm: false,

@@ -18,3 +18,14 @@
     letter-spacing: 1px;
     font-size: 20px;
 }
+
+.deposit-list-container{
+    height: 40vh;
+    overflow: scroll;
+}
+
+.deposit-item{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

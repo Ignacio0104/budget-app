@@ -73,11 +73,14 @@
     min-height: 90vh;
 }
 
-
-
 .percentage-goal-card{
     grid-column: span 2;
 }
+
+.percentage-goal-card input{
+    width: 100%;
+}
+
 
 .no-results-container{
     font-family: 'Quicksand', sans-serif;
