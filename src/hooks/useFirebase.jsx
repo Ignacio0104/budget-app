@@ -9,7 +9,13 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 const useFirebase = () => {
   const db = getFirestore(app);
@@ -40,12 +46,28 @@ const useFirebase = () => {
   const updateItemDb = async (dbName, newObject) => {
     await setDoc(doc(db, dbName, uid), newObject, { merge: true });
   };
+  function extractFilename(url) {
+    const regex = /\/o\/([^\/]+)%2F([^?]+)/;
+    const matches = url.match(regex);
+    if (matches && matches.length === 3) {
+      const folder = matches[1];
+      const filenameWithSpaces = matches[2];
+      const filename = filenameWithSpaces.replace(/%20/g, " "); // Eliminar los espacios (%20)
+      return { folder, filename };
+    } else {
+      // Manejar caso de URL no válida
+      return null;
+    }
+  }
 
-  const removeField = async (dbName, field) => {
+  const removeField = async (dbName, goal) => {
     let docRef = doc(db, dbName, uid);
+    const imageRef = extractFilename(goal.image);
+    let photoRef = ref(storage, `${imageRef.folder}/${imageRef.filename}`);
     await updateDoc(docRef, {
-      [field]: deleteField(),
+      [goal.key]: deleteField(),
     });
+    await deleteObject(photoRef);
   };
 
   const updloadFile = async (goalToSubmit, selectedImage) => {

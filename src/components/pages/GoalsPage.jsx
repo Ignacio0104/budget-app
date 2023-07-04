@@ -95,7 +95,7 @@ const GoalsPage = () => {
   };
 
   const deleteGoal = async (goal) => {
-    removeField("goals", goal.key);
+    removeField("goals", goal);
   };
 
   if (isFetching) {
@@ -132,8 +132,8 @@ const GoalsPage = () => {
                   {goal.total}
                   {selectedGoal?.key === goal.key && (
                     <span className="total-deposit">
-                      {goal?.deposits.length > 0 && <ArrowDropUpIcon />}
-                      {goal?.deposits.length > 0 &&
+                      {goal?.deposits?.length > 0 && <ArrowDropUpIcon />}
+                      {goal?.deposits?.length > 0 &&
                         `${getCurrency(goal)} ${goal.deposits.reduce(
                           (acc, curr) => acc + +curr.amount,
                           0

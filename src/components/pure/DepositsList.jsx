@@ -58,6 +58,7 @@ const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
     let depositsCopy = [...goal.deposits];
     depositsCopy.splice(confirmDelete.index, 1);
     await handleUpdate({ [goal.key]: { ...goal, deposits: depositsCopy } });
+    setShowForm(false);
     setIsLoading(false);
   };
 
