@@ -92,7 +92,9 @@ const DepositsList = ({ goal, toogleSelected, handleUpdate }) => {
           ))}
       </div>
       <div className="no-deposit-container">
-        {!goal.deposits && <h2>No hay depositos </h2>}
+        {(!goal.deposits || goal.deposits.length < 1) && (
+          <h2>No hay depositos </h2>
+        )}
       </div>
       <div className="add-deposit">
         <button onClick={toggleForm}>
@@ -100,7 +102,6 @@ const DepositsList = ({ goal, toogleSelected, handleUpdate }) => {
         </button>
       </div>
       {showForm ? <FormAddDeposit handleUpdate={updateGoal} /> : null}
-      <button onClick={() => toogleSelected(null)}>Volver</button>
       <Modal
         open={modalOpen}
         aria-labelledby="modal-modal-title"

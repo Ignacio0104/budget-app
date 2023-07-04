@@ -19,8 +19,14 @@
     font-size: 20px;
 }
 
+.no-deposit-container{
+    font-family: 'Dosis', sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
 .deposit-list-container{
-    height: 40vh;
+    max-height: 40vh;
     overflow: scroll;
 }
 

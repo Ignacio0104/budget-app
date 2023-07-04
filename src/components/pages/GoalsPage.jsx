@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import FormAddGoal from "../pure/FormAddGoal";
 import "./GoalsPage.css";
 import { CircularProgress, LinearProgress } from "@mui/material";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import DepositsList from "../pure/DepositsList";
+import WestIcon from "@mui/icons-material/West";
 import useFirebase from "../../hooks/useFirebase";
-import { ProgressBar } from "react-loader-spinner";
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
@@ -123,8 +124,18 @@ const GoalsPage = () => {
               <div className="goal-text-container">
                 <h3>{goal.key}</h3>
                 <h4>
-                  {getCurrency(goal)}
+                  {`${getCurrency(goal)} `}
                   {goal.total}
+                  {selectedGoal?.key === goal.key && (
+                    <span className="total-deposit">
+                      {goal?.deposits.length > 0 && <ArrowDropUpIcon />}
+                      {goal?.deposits.length > 0 &&
+                        `${getCurrency(goal)} ${goal.deposits.reduce(
+                          (acc, curr) => acc + +curr.amount,
+                          0
+                        )}`}
+                    </span>
+                  )}
                 </h4>
               </div>
               <div className="percentage-goal-card">
@@ -133,13 +144,18 @@ const GoalsPage = () => {
                   value={calculatePercentaje(goal)}
                 />
               </div>
+              {selectedGoal ? (
+                <div
+                  className="back-icon"
+                  onClick={() => handleChangeSelection(null)}
+                >
+                  <WestIcon fontSize="large" />
+                </div>
+              ) : null}
+
               {selectedGoal?.key === goal.key ? (
                 <div className="deposits-container">
-                  <DepositsList
-                    goal={selectedGoal}
-                    toogleSelected={handleChangeSelection}
-                    handleUpdate={updateGoal}
-                  />
+                  <DepositsList goal={selectedGoal} handleUpdate={updateGoal} />
                 </div>
               ) : null}
             </div>
