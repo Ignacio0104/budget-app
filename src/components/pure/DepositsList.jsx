@@ -9,6 +9,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
+import AlertNotification from "./AlertNotification";
 
 const style = {
   position: "absolute",
@@ -25,12 +26,13 @@ const style = {
 const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
   const [showForm, setShowForm] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState({
     confirm: false,
     index: -1,
     element: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (confirmDelete.confirm) {
       if (confirmDelete.element === "deposito") {

@@ -19,12 +19,21 @@ import SimulationCard from "../pure/SimulationCard";
 import useFirebase from "../../hooks/useFirebase";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import { TransitionDown } from "../utils/snackBarAnimations";
+import AlertNotification from "../pure/AlertNotification";
 
 const HomePage = () => {
   const [expenses, setExpenses] = useState([]);
   const [goals, setGoals] = useState([]);
-  const [modalError, setModalError] = useState({ open: false, error: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
+
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
+  };
 
   const { fetchUserData } = useFirebase();
 
@@ -34,13 +43,21 @@ const HomePage = () => {
       if (expenses.response === "OK") {
         setExpenses(expenses.data);
       } else {
-        setModalError({ open: true, error: expenses.data });
+        setSnackBarInfo({
+          open: true,
+          error: expenses.data,
+          severity: "warning",
+        });
       }
       let goals = await fetchUserData("goals");
       if (goals.response === "OK") {
         setGoals(goals.data);
       } else {
-        setModalError({ open: true, error: goals.data });
+        setSnackBarInfo({
+          open: true,
+          error: expenses.data,
+          severity: "warning",
+        });
       }
       setIsLoading(false);
     }
@@ -69,17 +86,12 @@ const HomePage = () => {
       <Link to={"/simulation"}>
         <SimulationCard />
       </Link>
-      <Snackbar
-        open={modalError.open}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={TransitionDown}
-        onClose={() => setModalError({ ...modalError, open: false, error: "" })}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {modalError.error}
-        </Alert>
-      </Snackbar>
+      {snackBarInfo.open ? (
+        <AlertNotification
+          snackbarInfo={snackBarInfo}
+          onClose={closeSnackBar}
+        />
+      ) : null}
     </div>
   );
 };

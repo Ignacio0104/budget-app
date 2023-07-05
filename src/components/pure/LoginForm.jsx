@@ -71,7 +71,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
         }
       })
       .catch((error) => {
-        setError({ open: true, error: error });
+        setError({ open: true, error: error, severity: "warning" });
       });
   };
 
@@ -84,7 +84,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
         navigate("/home");
       })
       .catch((error) => {
-        setError({ open: true, error: error });
+        setError({ open: true, error: error, severity: "warning" });
       })
       .finally(setisLoading(false));
   };

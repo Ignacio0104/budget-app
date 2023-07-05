@@ -7,6 +7,7 @@ import "./FormAddGoal.css";
 import { useEffect } from "react";
 import uploadIcon from "../../assets/images/upload-icon.png";
 import useFirebase from "../../hooks/useFirebase";
+import AlertNotification from "./AlertNotification";
 
 const goalSchema = yup.object().shape({
   description: yup
@@ -25,6 +26,11 @@ const FormAddGoal = () => {
     total: 0,
     currency: "pesos",
     image: "",
+  });
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState({ url: "", file: "" });
@@ -85,9 +91,19 @@ const FormAddGoal = () => {
       });
       setSelectedImage({ ...selectedImage, url: "", file: "" });
       setIsSubmitting(false);
+      setSnackBarInfo({
+        open: true,
+        message: "Objetivo creado con exito",
+        severity: "success",
+      });
       resetForm();
     }
   };
+
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
+  };
+
   return (
     <div className="main-goal-add-container">
       <Formik
@@ -162,6 +178,7 @@ const FormAddGoal = () => {
           </Form>
         )}
       </Formik>
+      <AlertNotification snackbarInfo={snackBarInfo} onClose={closeSnackBar} />
     </div>
   );
 };

@@ -3,16 +3,24 @@ import "./RegisterPage.css";
 import Register from "../pure/RegisterForm";
 import { Alert, Snackbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AlertNotification from "../pure/AlertNotification";
 
 const RegisterPage = () => {
-  const [error, setError] = useState("");
-  const [modalErrorOpen, setModalErrorOpen] = useState(false);
-  useEffect(() => {
-    setModalErrorOpen(error !== "");
-  }, [error]);
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
   const [submitCorrect, setSubmitCorrect] = useState(false);
 
   const navigate = useNavigate();
+
+  const updateSnackBar = (open, message, severity) => {
+    setSnackBarInfo({ open: open, message: message, severity: severity });
+  };
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
+  };
 
   useEffect(() => {
     if (submitCorrect) {
@@ -24,17 +32,17 @@ const RegisterPage = () => {
     <div className="register-main-container">
       <div className="register-container">
         <h2 className="main-title">Registrate</h2>
-        <Register handleError={setError} confirmSubmit={setSubmitCorrect} />
+        <Register
+          handleError={updateSnackBar}
+          confirmSubmit={setSubmitCorrect}
+        />
       </div>
-      <Snackbar
-        open={modalErrorOpen}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="warning" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Snackbar>
+      {snackBarInfo.open ? (
+        <AlertNotification
+          snackbarInfo={snackBarInfo}
+          onClose={closeSnackBar}
+        />
+      ) : null}
     </div>
   );
 };

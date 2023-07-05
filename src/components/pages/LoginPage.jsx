@@ -4,9 +4,21 @@ import LoginForm from "../pure/LoginForm";
 import { Link } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 import { TransitionDown } from "../utils/snackBarAnimations";
+import AlertNotification from "../pure/AlertNotification";
 
 const LoginPage = ({ handleLogin }) => {
-  const [modalError, setModalError] = useState({ open: false, error: "" });
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
+
+  const updateSnackBar = (open, message, severity) => {
+    setSnackBarInfo({ open: open, message: message, severity: severity });
+  };
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
+  };
   return (
     <div className="landing-container">
       <div className="message-container">
@@ -21,7 +33,7 @@ const LoginPage = ({ handleLogin }) => {
         <div className="division-line"></div>
         <div className="login-container">
           <h4>Ingresa</h4>
-          <LoginForm toogleLogin={handleLogin} setError={setModalError} />
+          <LoginForm toogleLogin={handleLogin} setError={updateSnackBar} />
         </div>
         <div className="forgot-register-container">
           <Link to={"/resetPassword"} className="forgot-link">
@@ -32,17 +44,12 @@ const LoginPage = ({ handleLogin }) => {
           </Link>
         </div>
       </div>
-      <Snackbar
-        open={modalError.open}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={TransitionDown}
-        onClose={() => setModalError({ ...modalError, open: false, error: "" })}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {modalError.error}
-        </Alert>
-      </Snackbar>
+      {snackBarInfo.open ? (
+        <AlertNotification
+          snackbarInfo={snackBarInfo}
+          onClose={closeSnackBar}
+        />
+      ) : null}
     </div>
   );
 };

@@ -77,16 +77,23 @@ const Register = ({ handleError, confirmSubmit }) => {
           profilPic: "",
           uid: userCredential.user.uid,
         });
-        handleError("");
+        handleError({ open: false, error: "", severity: "" });
         confirmSubmit(true);
       })
       .catch((error) => {
         if (error.message.includes("already-in-use")) {
-          handleError(
-            "El email ingresado ya se encuentra registrado en nuestro sistema"
-          );
+          handleError({
+            open: true,
+            error:
+              "El email ingresado ya se encuentra registrado en nuestro sistema",
+            severity: "warning",
+          });
         } else {
-          handleError(error.message);
+          handleError({
+            open: true,
+            error: error.message,
+            severity: "warning",
+          });
         }
       })
       .finally(setSubmitting(false));

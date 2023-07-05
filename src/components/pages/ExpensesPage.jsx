@@ -6,6 +6,7 @@ import Graph from "../pure/Graph";
 import { TransitionDown } from "../utils/snackBarAnimations";
 import ExpensesList from "../pure/ExpensesList";
 import useFirebase from "../../hooks/useFirebase";
+import AlertNotification from "../pure/AlertNotification";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
@@ -17,8 +18,16 @@ const ExpensesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [monthExpensesLength, setMonthExpensesLength] = useState(0);
-  const [modalError, setModalError] = useState({ open: false, error: "" });
   const [selectionGraph, setSelectionGraph] = useState("Graph");
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
+
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
+  };
 
   const { fetchUserData, uid } = useFirebase();
 
@@ -54,7 +63,7 @@ const ExpensesPage = () => {
     if (res.response === "OK") {
       setExpenses(res.data);
     } else {
-      setModalError({ open: true, error: res.data });
+      setSnackBarInfo({ open: true, error: res.data, severity: "warning" });
     }
     setIsLoading(false);
   };
@@ -186,17 +195,12 @@ const ExpensesPage = () => {
           />
         </div>
       </div>
-      <Snackbar
-        open={modalError.open}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={TransitionDown}
-        onClose={() => setModalError({ ...modalError, open: false, error: "" })}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {modalError.error}
-        </Alert>
-      </Snackbar>
+      {snackBarInfo.open ? (
+        <AlertNotification
+          snackbarInfo={snackBarInfo}
+          onClose={closeSnackBar}
+        />
+      ) : null}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import DepositsList from "../pure/DepositsList";
 import WestIcon from "@mui/icons-material/West";
 import useFirebase from "../../hooks/useFirebase";
+import AlertNotification from "../pure/AlertNotification";
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
@@ -13,6 +14,11 @@ const GoalsPage = () => {
   const [goals, setGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const { fetchUserData, updateItemDb, removeField } = useFirebase();
+  const [snackBarInfo, setSnackBarInfo] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   const fetchGoals = async () => {
     let response = await fetchUserData("goals");
@@ -88,6 +94,7 @@ const GoalsPage = () => {
   const updateGoal = async (goalToUpdate) => {
     try {
       await updateItemDb("goals", goalToUpdate);
+      handleChangeSelection(null);
       await fetchGoals();
     } catch (err) {
       console.log(err);
@@ -95,7 +102,21 @@ const GoalsPage = () => {
   };
 
   const deleteGoal = async (goal) => {
-    removeField("goals", goal);
+    try {
+      await removeField("goals", goal);
+      setSnackBarInfo({
+        open: true,
+        message: "Objetivo borrado con exito",
+        severity: "success",
+      });
+      await fetchGoals();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const closeSnackBar = () => {
+    setSnackBarInfo({ open: false, message: "", severity: "" });
   };
 
   if (isFetching) {
@@ -180,6 +201,12 @@ const GoalsPage = () => {
       >
         {creationFormOpen ? "Cerrar Formulario" : "Crear Objetivo"}
       </button>
+      {snackBarInfo.open ? (
+        <AlertNotification
+          snackbarInfo={snackBarInfo}
+          onClose={closeSnackBar}
+        />
+      ) : null}
     </div>
   );
 };
