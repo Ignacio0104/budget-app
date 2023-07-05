@@ -94,7 +94,6 @@ const GoalsPage = () => {
   const updateGoal = async (goalToUpdate) => {
     try {
       await updateItemDb("goals", goalToUpdate);
-      handleChangeSelection(null);
       await fetchGoals();
     } catch (err) {
       console.log(err);
