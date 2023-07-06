@@ -9,7 +9,6 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import AlertNotification from "./AlertNotification";
 
 const style = {
   position: "absolute",
@@ -38,7 +37,7 @@ const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
       if (confirmDelete.element === "deposito") {
         deleteDeposit();
       } else {
-        handleGoalDelete(goal);
+        deleteGoal();
       }
     }
   }, [confirmDelete.confirm]);
@@ -50,16 +49,18 @@ const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
     }
   };
 
-  const deleteGoal = (element) => {
-    setConfirmDelete({ ...confirmDelete, element: element });
-    setModalOpen(true);
-  };
-
   const deleteDeposit = async () => {
     setIsLoading(true);
     let depositsCopy = [...goal.deposits];
     depositsCopy.splice(confirmDelete.index, 1);
     await handleUpdate({ [goal.key]: { ...goal, deposits: depositsCopy } });
+    setShowForm(false);
+    setIsLoading(false);
+  };
+
+  const deleteGoal = async () => {
+    setIsLoading(true);
+    await handleGoalDelete(goal);
     setShowForm(false);
     setIsLoading(false);
   };
@@ -117,8 +118,8 @@ const DepositsList = ({ goal, handleUpdate, handleGoalDelete }) => {
       </div>
       {!showForm ? (
         <div className="delete-goal">
-          <button onClick={() => deleteGoal("objetivo")}>
-            Eliminar Objetivo
+          <button onClick={() => handleDelete(-1, "objetivo")}>
+            {isLoading ? <CircularProgress size={25} /> : "Eliminar Objetivo"}
           </button>
         </div>
       ) : null}

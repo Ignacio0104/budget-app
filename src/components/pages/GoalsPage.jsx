@@ -50,7 +50,7 @@ const GoalsPage = () => {
   }, [creationFormOpen]);
 
   const handleChangeSelection = (goal) => {
-    if (selectedGoal === null) {
+    if (selectedGoal === null || selectedGoal === undefined) {
       setSelectedGoal(goal);
     }
     if (goal === null) {

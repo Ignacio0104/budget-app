@@ -11,9 +11,8 @@ const AlertNotification = ({ snackbarInfo, onClose }) => {
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       TransitionComponent={TransitionDown}
       onClose={onClose}
-      //   () => setModalError({ ...modalError, open: false, error: "" })
     >
-      <Alert severity={severity} sx={{ width: "100%" }}>
+      <Alert severity={severity ? severity : "success"} sx={{ width: "100%" }}>
         {message}
       </Alert>
     </Snackbar>

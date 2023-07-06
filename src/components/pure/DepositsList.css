@@ -26,11 +26,14 @@
 
 .delete-goal button{
     background-color: tomato;
+    display: flex;
+    justify-content: center;
     color: whitesmoke;
     font-size: 15px;
     letter-spacing: 2px;
+    width: 50vw;
+    height: 5vh;
 }
-
 .no-deposit-container{
     font-family: 'Dosis', sans-serif;
     display: flex;
