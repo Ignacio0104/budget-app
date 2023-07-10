@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./ExpensesPage.css";
-import { Alert, CircularProgress, Snackbar } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
 import Graph from "../pure/Graph";
-import { TransitionDown } from "../utils/snackBarAnimations";
 import ExpensesList from "../pure/ExpensesList";
 import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";

@@ -18,17 +18,13 @@ const style = {
 const ModalEdition = ({ editionState, closeModal }) => {
   const [error, setError] = useState("");
   const [updatedItem, setUpdatedItem] = useState({
-    category: editionState?.item?.category,
-    name: editionState?.item?.name,
-    amount: editionState?.item?.amount,
+    category: editionState.item.category,
+    name: editionState.item.name,
+    amount: editionState.item.amount,
   });
 
   useEffect(() => {
-    if (!updatedItem.category || !updatedItem.name || !updatedItem.amount) {
-      setError("Por favor, revisa la información ingresada");
-    } else {
-      setError("");
-    }
+    checkFields();
   }, [updatedItem]);
 
   const handleChange = (e, field) => {
@@ -37,9 +33,18 @@ const ModalEdition = ({ editionState, closeModal }) => {
       [field]: e.target.value,
     });
   };
+
   const handleClose = (boolean, deleteItem) => {
     if (!error) {
       closeModal(updatedItem, boolean, editionState.index, deleteItem);
+    }
+  };
+
+  const checkFields = () => {
+    if (!updatedItem.category || !updatedItem.name || !updatedItem.amount) {
+      setError("Por favor, revisa la información ingresada");
+    } else {
+      setError("");
     }
   };
 
