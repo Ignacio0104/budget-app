@@ -12,27 +12,37 @@ const SimulationDisplay = ({ simulation, exitEditMode }) => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
   const handleChange = (index) => (event, newExpanded) => {
-    setExpandedIndex(index);
+    if (index === expandedIndex) {
+      setExpandedIndex(-1);
+    } else {
+      setExpandedIndex(index);
+    }
   };
-  // simulation.expenses.map((exp) => {
-  //   let indexOfCategory = percentagesArray.findIndex(
-  //     (obj) => exp.category in obj
-  //   );
-  //   if (indexOfCategory === -1) {
-  //     percentagesArray.push(([exp.category] = { elements: [] }));
-  //   } else {
-  //   }
-  // });
-  // console.log(percentagesArray);
+
   const getPercentagesArray = () => {
     let percentagesArray = [];
+    simulation.expenses.map((exp) => {
+      let indexOfCategory = percentagesArray.findIndex(
+        (obj) => exp.category in obj
+      );
+      if (indexOfCategory === -1) {
+        percentagesArray.push({ [exp.category]: { total: 0, elements: [] } });
+        indexOfCategory = percentagesArray.findIndex(
+          (obj) => exp.category in obj
+        );
+      }
+      let existingObject = percentagesArray[indexOfCategory];
+      existingObject[exp.category].total += +exp.amount;
+      existingObject[exp.category].elements.push(exp);
+    });
+    return percentagesArray;
   };
 
   return (
     <div className="simulation-info-container">
       <div className="simulation-header">
         <h4>
-          Presupuesto: <br /> <h2>${simulation.income}</h2>
+          Presupuesto: <br /> <p>${simulation.income}</p>
         </h4>
         <div className="edit-icon" onClick={() => exitEditMode(true)}>
           <ModeEditIcon />
@@ -49,7 +59,8 @@ const SimulationDisplay = ({ simulation, exitEditMode }) => {
                 aria-controls="panel1d-content"
                 id="panel1d-header"
               >
-                <Typography>{exp.category}</Typography>
+                <Typography>{Object.keys(exp)[0]}</Typography>
+                <Typography> ${exp[Object.keys(exp)[0]].total}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
