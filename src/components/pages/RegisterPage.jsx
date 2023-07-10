@@ -14,7 +14,6 @@ const RegisterPage = () => {
   const [submitCorrect, setSubmitCorrect] = useState(false);
 
   const navigate = useNavigate();
-
   const updateSnackBar = (open, message, severity) => {
     setSnackBarInfo({ open: open, message: message, severity: severity });
   };

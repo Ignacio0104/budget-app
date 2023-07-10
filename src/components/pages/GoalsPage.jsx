@@ -138,7 +138,11 @@ const GoalsPage = () => {
             <div
               key={i}
               className={`goal-card ${
-                selectedGoal?.key === goal.key ? "selected-card" : ""
+                selectedGoal?.key === goal.key
+                  ? "selected-card"
+                  : selectedGoal
+                  ? "unselected-card"
+                  : ""
               }`}
               onClick={() => handleChangeSelection(goal)}
             >

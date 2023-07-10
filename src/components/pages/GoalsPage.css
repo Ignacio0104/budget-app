@@ -73,6 +73,11 @@
     min-height: 90vh;
 }
 
+
+.unselected-card{
+    display: none;
+}
+
 .percentage-goal-card{
     grid-column: span 2;
 }
@@ -97,4 +102,5 @@
     margin-left: 15%;
     color: green;
 }
+
 

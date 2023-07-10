@@ -1,0 +1,34 @@
+.modal-input-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-input-container input{
+    width: 25%;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.modal-container{
+    position: relative;
+}
+
+.delete-icon-container{
+    position: absolute;
+    top: 3%;
+    right: 2%;
+    background-color: tomato;
+    border-radius: 50%;
+    padding: 10px;
+    color: white;
+}
+.button-confirmation-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.error-container p {
+    font-size: 13px;
+    color: tomato;
+}
