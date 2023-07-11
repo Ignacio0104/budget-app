@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import "./LoginPage.css";
+import "./LoginPage.scss";
 import LoginForm from "../pure/LoginForm";
 import { Link } from "react-router-dom";
-import { Alert, Snackbar } from "@mui/material";
-import { TransitionDown } from "../utils/snackBarAnimations";
 import AlertNotification from "../pure/AlertNotification";
 
 const LoginPage = ({ handleLogin }) => {
