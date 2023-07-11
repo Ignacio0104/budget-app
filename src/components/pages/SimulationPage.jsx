@@ -7,23 +7,18 @@ import useFirebase from "../../hooks/useFirebase";
 
 const SimulationPage = () => {
   const [simulations, setSimulations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedSimulation, setSelectedSimulation] = useState(null);
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   const { updateItemDb, fetchUserData } = useFirebase();
 
   useEffect(() => {
     fetchSimulation();
   }, []);
-  useEffect(() => {
-    console.log(simulations);
-  }, [simulations]);
-
-  useEffect(() => {
-    console.log(selectedSimulation);
-  }, [selectedSimulation]);
 
   const fetchSimulation = async () => {
+    setIsLoading(true);
     fetchUserData("simulations")
       .then((res) => {
         setSimulations(
@@ -32,12 +27,16 @@ const SimulationPage = () => {
             ...res.data[key],
           }))
         );
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   const toogleEditMode = async (boolean) => {
-    if (!boolean) {
+    if (!boolean & selectedSimulation) {
       await updateItemDb("simulations", {
         [selectedSimulation.title]: selectedSimulation,
       });
@@ -50,28 +49,49 @@ const SimulationPage = () => {
     setSelectedSimulation(newSim);
   };
 
-  const checkSimulation = () => {
-    return (
-      selectedSimulation.income > 0 && selectedSimulation.expenses.length > 0
-    );
+  const handleSimulationSelection = (sim) => {
+    setSelectedSimulation(sim);
   };
+
+  const handleSelectedSim = (object) => {
+    setSelectedSimulation(object);
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="simulation-main-container">
-      {(simulations.length > 0) & !selectedSimulation ? (
-        <p>Elegi</p>
-      ) : editMode ? (
+      {editMode ? (
         <SimulationCreation
           simulationProp={selectedSimulation}
           handleSimulation={updateSimulationState}
           exitEditMode={toogleEditMode}
         />
-      ) : checkSimulation() ? (
+      ) : (simulations.length > 0) & !selectedSimulation ? (
+        <div>
+          {simulations.map((sim, index) => (
+            <div
+              key={index}
+              className="sim-card"
+              onClick={() => handleSimulationSelection(sim)}
+            >
+              <h2>{sim.key}</h2>
+              <h4>{sim.income}</h4>
+            </div>
+          ))}
+          <button onClick={() => setEditMode(!editMode)}>
+            Crear simulacion
+          </button>
+        </div>
+      ) : (
         <SimulationDisplay
           simulation={selectedSimulation}
           exitEditMode={toogleEditMode}
+          toogleSelected={handleSelectedSim}
         />
-      ) : null}
+      )}
     </div>
   );
 };

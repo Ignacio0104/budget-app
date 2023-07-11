@@ -282,6 +282,7 @@ const SimulationCreation = ({
         )}
         <ModalEdition editionState={editionMode} closeModal={closeModal} />
       </div>
+      <button onClick={() => exitEditMode(false)}>Volver</button>
     </div>
   );
 };

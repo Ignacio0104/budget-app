@@ -9,8 +9,9 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
+import SimulationGraph from "./SimulationGraph";
 
-const SimulationDisplay = ({ simulation, exitEditMode }) => {
+const SimulationDisplay = ({ simulation, exitEditMode, toogleSelected }) => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
   const handleChange = (index) => (event, newExpanded) => {
@@ -120,7 +121,13 @@ const SimulationDisplay = ({ simulation, exitEditMode }) => {
             <AccordionDetails></AccordionDetails>
           </Accordion>
         </div>
+        {simulation.expenses.length > 0 ? (
+          <div className="graph-container">
+            <SimulationGraph simulationProp={simulation} />
+          </div>
+        ) : null}
       </div>
+      <button onClick={() => toogleSelected(null)}>Volver</button>
     </div>
   );
 };
