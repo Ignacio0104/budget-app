@@ -20,3 +20,17 @@
     display: flex;
     justify-content: space-between;
 }
+
+.MuiTypography-root{
+    display: flex;
+}
+
+.accordion-details{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.css-1elwnq4-MuiPaper-root-MuiAccordion-root {
+    background-color: transparent
+}

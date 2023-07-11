@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ModalEdition from "./ModalEdition";
 import "./SimulationCreation.css";
-import useFirebase from "../../hooks/useFirebase";
 
 const SimulationCreation = ({
   simulationProp,
@@ -24,19 +23,25 @@ const SimulationCreation = ({
     index: -1,
   });
 
+  const simulationNameRef = useRef();
   const incomeRef = useRef();
   const expenseRefAmount = useRef();
   const expenseRefDescription = useRef();
   const selectRef = useRef();
 
   const handleIncomeUpdate = () => {
-    if (isNaN(incomeRef.current.value)) {
-      setError({ isError: true, errorMessage: "Only numbers" });
-    } else if (+incomeRef.current.value < 1) {
+    if (+incomeRef.current.value < 1) {
       setError({ isError: true, errorMessage: "Value must be greater than 0" });
+    } else if (simulationNameRef.current?.value === "") {
+      setError({ isError: true, errorMessage: "All fields are required" });
     } else {
       setError({ isError: false, errorMessage: "" });
-      handleSimulation({ ...simulationProp, income: +incomeRef.current.value });
+      handleSimulation({
+        ...simulationProp,
+        title: simulationNameRef.current.value,
+        income: +incomeRef.current.value,
+        expenses: [],
+      });
     }
   };
 
@@ -163,11 +168,20 @@ const SimulationCreation = ({
   return (
     <div className="simulation-edit-container">
       <div className="input-container">
-        {!simulationProp.income ? (
+        {!simulationProp?.income ? (
           <div className="income-input">
+            <label>Nombre simulacion</label>
+            <input
+              ref={simulationNameRef}
+              className={`simulation-input ${
+                !error.isError ? "sim-input-ok" : "sim-input-error"
+              }`}
+              type="text"
+            />
             <label>¿Cual es tu ingreso esperado?</label>
             <input
               ref={incomeRef}
+              defaultValue={0}
               className={`simulation-input ${
                 !error.isError ? "sim-input-ok" : "sim-input-error"
               }`}
@@ -236,27 +250,30 @@ const SimulationCreation = ({
 
             <div className="sim-table-container">
               <table className="sim-expenses-list">
-                {simulationProp?.expenses?.length > 0 ? (
-                  <tr>
-                    <th onClick={() => sortTable("category")}>Categoria</th>
-                    <th onClick={() => sortTable("name")}>Nombre</th>
-                    <th onClick={() => sortTable("amount")}>Monto</th>
-                  </tr>
-                ) : null}
-
-                {simulationProp.expenses.map((expense, index) => (
-                  <tr key={index}>
-                    <td>{expense.category}</td>
-                    <td>{expense.name}</td>
-                    <td>${expense.amount}</td>
-                    <td
-                      className="edit-column"
-                      onClick={() => openModal(expense, index)}
-                    >
-                      <ModeEditIcon fontSize="small" />
-                    </td>
-                  </tr>
-                ))}
+                <thead>
+                  {simulationProp?.expenses?.length > 0 ? (
+                    <tr>
+                      <th onClick={() => sortTable("category")}>Categoria</th>
+                      <th onClick={() => sortTable("name")}>Nombre</th>
+                      <th onClick={() => sortTable("amount")}>Monto</th>
+                    </tr>
+                  ) : null}
+                </thead>
+                <tbody>
+                  {simulationProp.expenses.map((expense, index) => (
+                    <tr key={index}>
+                      <td>{expense.category}</td>
+                      <td>{expense.name}</td>
+                      <td>${expense.amount}</td>
+                      <td
+                        className="edit-column"
+                        onClick={() => openModal(expense, index)}
+                      >
+                        <ModeEditIcon fontSize="small" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
             <button onClick={handleExpensesUpdate}> Agregar </button>

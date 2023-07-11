@@ -6,7 +6,8 @@ import SimulationDisplay from "../pure/SimulationDisplay";
 import useFirebase from "../../hooks/useFirebase";
 
 const SimulationPage = () => {
-  const [simulation, setSimulation] = useState({ income: 0, expenses: [] });
+  const [simulations, setSimulations] = useState([]);
+  const [selectedSimulation, setSelectedSimulation] = useState(null);
   const [editMode, setEditMode] = useState(true);
 
   const { updateItemDb, fetchUserData } = useFirebase();
@@ -14,35 +15,60 @@ const SimulationPage = () => {
   useEffect(() => {
     fetchSimulation();
   }, []);
+  useEffect(() => {
+    console.log(simulations);
+  }, [simulations]);
+
+  useEffect(() => {
+    console.log(selectedSimulation);
+  }, [selectedSimulation]);
 
   const fetchSimulation = async () => {
     fetchUserData("simulations")
-      .then((res) => setSimulation(res.data))
+      .then((res) => {
+        setSimulations(
+          Object.keys(res.data).map((key) => ({
+            key,
+            ...res.data[key],
+          }))
+        );
+      })
       .catch((err) => console.log(err));
   };
 
   const toogleEditMode = async (boolean) => {
     if (!boolean) {
-      await updateItemDb("simulations", simulation);
+      await updateItemDb("simulations", {
+        [selectedSimulation.title]: selectedSimulation,
+      });
     }
     setEditMode(boolean);
   };
 
+  const updateSimulationState = (newSim) => {
+    setSimulations([...simulations, newSim]);
+    setSelectedSimulation(newSim);
+  };
+
   const checkSimulation = () => {
-    return simulation.income > 0 && simulation.expenses.length > 0;
+    return (
+      selectedSimulation.income > 0 && selectedSimulation.expenses.length > 0
+    );
   };
 
   return (
     <div className="simulation-main-container">
-      {editMode ? (
+      {(simulations.length > 0) & !selectedSimulation ? (
+        <p>Elegi</p>
+      ) : editMode ? (
         <SimulationCreation
-          simulationProp={simulation}
-          handleSimulation={setSimulation}
+          simulationProp={selectedSimulation}
+          handleSimulation={updateSimulationState}
           exitEditMode={toogleEditMode}
         />
       ) : checkSimulation() ? (
         <SimulationDisplay
-          simulation={simulation}
+          simulation={selectedSimulation}
           exitEditMode={toogleEditMode}
         />
       ) : null}

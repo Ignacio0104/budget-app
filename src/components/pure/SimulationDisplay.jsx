@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "./SimulationDisplay.css";
 import {
   Accordion,
@@ -38,6 +40,17 @@ const SimulationDisplay = ({ simulation, exitEditMode }) => {
     return percentagesArray;
   };
 
+  const calculateSavings = () => {
+    let total =
+      simulation.income -
+      getPercentagesArray().reduce(
+        (acc, curr) => acc + curr[Object.keys(curr)[0]].total,
+        0
+      );
+    let percentage = ((total * 100) / simulation.income).toFixed(2);
+    return { total, percentage };
+  };
+
   return (
     <div className="simulation-info-container">
       <div className="simulation-header">
@@ -54,25 +67,58 @@ const SimulationDisplay = ({ simulation, exitEditMode }) => {
             <Accordion
               expanded={expandedIndex === index}
               onChange={handleChange(index)}
+              key={index}
             >
               <AccordionSummary
                 aria-controls="panel1d-content"
                 id="panel1d-header"
               >
-                <Typography>{Object.keys(exp)[0]}</Typography>
-                <Typography> ${exp[Object.keys(exp)[0]].total}</Typography>
+                <Typography>
+                  {expandedIndex === index ? (
+                    <ArrowDropDownIcon />
+                  ) : (
+                    <ArrowRightIcon />
+                  )}
+                  {Object.keys(exp)[0]}
+                </Typography>
+                <Typography>
+                  ${exp[Object.keys(exp)[0]].total} /{" "}
+                  {(
+                    (exp[Object.keys(exp)[0]].total / +simulation.income) *
+                    100
+                  ).toFixed(2)}
+                  %
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
+                {exp[Object.keys(exp)[0]].elements.map((element) => (
+                  <div className="accordion-details">
+                    <p>{element.name}</p>
+                    <p>
+                      ${element.amount} /{" "}
+                      {(
+                        (element.amount / +exp[Object.keys(exp)[0]].total) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </p>
+                  </div>
+                ))}
               </AccordionDetails>
             </Accordion>
           ))}
+          <Accordion expanded={false} onChange={handleChange(-1)}>
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography>Resto/Ahorro</Typography>
+              <Typography>
+                ${calculateSavings().total} / {calculateSavings().percentage}%
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails></AccordionDetails>
+          </Accordion>
         </div>
       </div>
     </div>
