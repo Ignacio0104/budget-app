@@ -2,15 +2,7 @@ import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import CustomInput from "./CustomInput";
-import "./FormAddExpense.css";
-import {
-  addDoc,
-  collection,
-  doc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
-import { app } from "../../firebase/fibaseConfig";
+import "./FormAddExpense.scss";
 import { CircularProgress } from "@mui/material";
 import useFirebase from "../../hooks/useFirebase";
 
@@ -124,7 +116,7 @@ const FormAddExpense = ({
               ></CustomInput>
             </div>
             <div className="amount-container">
-              <label>Monto: </label>
+              <label>Monto: $</label>
               <CustomInput
                 label="Amount"
                 type="number"
@@ -143,7 +135,7 @@ const FormAddExpense = ({
             </div>
             <button className="submit-btn" type="submit">
               {isSubmitting ? (
-                <CircularProgress size={20}></CircularProgress>
+                <CircularProgress size={20} color="success"></CircularProgress>
               ) : (
                 "Submit"
               )}

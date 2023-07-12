@@ -108,7 +108,7 @@ const ExpensesPage = () => {
   if (isLoading) {
     return (
       <div className="spinner-container">
-        <CircularProgress size={60}></CircularProgress>
+        <CircularProgress size={60} color="success"></CircularProgress>
       </div>
     );
   }

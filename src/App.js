@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import "./App.scss";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/pure/Navbar";
 import LoginPage from "./components/pages/LoginPage";
 import HomePage from "./components/pages/HomePage";
@@ -45,6 +45,29 @@ function App() {
   return (
     <AppContext.Provider value={{ userLoggedIn: isLoggedIn }}>
       <div className="App">
+        <div class="background">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <BrowserRouter>
           {isLoading && <Loader />}
           <Navbar />
@@ -71,28 +94,6 @@ function App() {
             ></Route>
           </Routes>
         </BrowserRouter>
-        <div class="background">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
       </div>
     </AppContext.Provider>
   );
