@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
-import "./HomePage.css";
+import "./HomePage.scss";
 import ExpensesCard from "../pure/ExpensesCard";
 import GoalsCard from "../pure/GoalsCard";
 import { Link } from "react-router-dom";

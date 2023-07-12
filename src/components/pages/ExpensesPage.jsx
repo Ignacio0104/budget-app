@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ExpensesPage.css";
+import "./ExpensesPage.scss";
 import { CircularProgress } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
 import Graph from "../pure/Graph";

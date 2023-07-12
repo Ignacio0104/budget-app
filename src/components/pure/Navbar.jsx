@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import "./Navbar.css";
+import "./Navbar.scss";
 import useFirebase from "../../hooks/useFirebase";
+import graphNavBar from "../../assets/images/graphIcon-navbar-nobg.png";
 
 const Navbar = () => {
   const [openResponsive, setOpenResponsive] = useState(false);
@@ -29,7 +30,9 @@ const Navbar = () => {
           <span onClick={toggleMenu}>
             {!openResponsive ? <MenuIcon /> : <CloseIcon />}
           </span>
-          <h3>Expense Tracker</h3>
+          <h3 className="navbar-title">
+            Expense <img src={graphNavBar} alt="graph" /> Tracker
+          </h3>
         </div>
         <div
           className={`routes-navbar-container-responsive ${

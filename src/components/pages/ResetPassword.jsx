@@ -3,8 +3,10 @@ import CustomInput from "../pure/CustomInput";
 import { Form, Formik } from "formik";
 import { Oval } from "react-loader-spinner";
 import * as yup from "yup";
-import "./ResetPassword.css";
+import "./ResetPassword.scss";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { Link } from "react-router-dom";
+import WestIcon from "@mui/icons-material/West";
 
 const resetSchema = yup.object().shape({
   email: yup
@@ -30,6 +32,11 @@ const ResetPassword = () => {
   return (
     <div className="main-reset-container">
       <div className="form-reset-container">
+        <div className="back-arrow-container">
+          <Link to={"/loginPage"}>
+            <WestIcon />
+          </Link>
+        </div>
         <h3 className="reset-title">Reinicia tu clave</h3>
         <p>
           Ingresa tu dirección de correo electrónico para que podamos enviarte

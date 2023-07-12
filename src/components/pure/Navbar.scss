@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import "../style/mainStyle.scss";
 .navbar-main-container-responsive{
     width: 100%;
     min-height: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid whitesmoke;
     z-index: 110;
+    color: white;
 }
 
 .logo-name-container{
@@ -12,16 +12,31 @@
     align-items: center;
 }
 
-.logo-name-container h3{
+.logo-name-container {
+   h3{
     padding: 10px 0px;
     margin: auto;
-    font-family: 'Quicksand', sans-serif;
+    @extend navBarHeader;
     font-size: 30px;
+   }
 }
 
-.logo-name-container svg{
-    font-size: 35px;
-    cursor: pointer;
+.navbar-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img{
+        height: 40px;
+        margin: 0px 10px;
+    }
+}
+
+.logo-name-container{
+    svg{
+        font-size: 35px;
+        cursor: pointer;
+    }
+  
 }
 
 .routes-navbar-container-responsive{
@@ -45,16 +60,19 @@
     transition: all 0.5s ease;
 }
 
-.routes-navbar-container-responsive a{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 40px 0px;
-    text-decoration: none;
-    color: whitesmoke;
-    font-family: 'Dosis', sans-serif;
-    letter-spacing: 2px;
-    font-size: 30px;
+.routes-navbar-container-responsive {
+    a{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 40px 0px;
+        text-decoration: none;
+        color: whitesmoke;
+        font-family: 'Dosis', sans-serif;
+        letter-spacing: 2px;
+        font-size: 30px;
+    }
+   
 }
 
 .routes-navbar-container-responsive a:hover{
