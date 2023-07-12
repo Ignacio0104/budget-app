@@ -1,19 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
 
-.custom-input-container input,textarea{
-    background-color:transparent;
-    font-size: 18px;
-    font-family: 'Dosis', sans-serif;
+.custom-input-container{
+    input,textarea{
+        background-color:transparent;
+        font-size: 18px;
+        font-family: 'Dosis', sans-serif;
+        color: whitesmoke;
+    }
+    input::placeholder, textarea::placeholder{
+        color: whitesmoke;
+    }
+  
 }
 
 .input-ok{
     border: none;
-    border-bottom: 1px solid #012A4A;
+    border-bottom: 1px solid whitesmoke;
 }
 
 .input-ok:focus{
     outline: none;
-    border-bottom: 1px solid #2C7DA0;
+    border-bottom: 1px solid #74C69D;
     transition: all 0.4s ease-in-out;
 }
 

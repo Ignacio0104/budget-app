@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ModalEdition from "./ModalEdition";
-import "./SimulationCreation.css";
+import "./SimulationCreation.scss";
 
 const SimulationCreation = ({
   simulationProp,
@@ -192,7 +192,9 @@ const SimulationCreation = ({
                 <p>{error.errorMessage}</p>
               </div>
             ) : null}
-            <button onClick={handleIncomeUpdate}>Confirmar</button>
+            <button className="sim-submit-btn" onClick={handleIncomeUpdate}>
+              Confirmar
+            </button>
           </div>
         ) : (
           <div className="expenses-input">

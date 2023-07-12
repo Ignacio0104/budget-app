@@ -1,6 +1,6 @@
 import { Formik, Form } from "formik";
-import { useState, useEffect, useContext } from "react";
-import "./LoginForm.css";
+import { useState } from "react";
+import "./LoginForm.scss";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import CustomInput from "../pure/CustomInput";
@@ -23,8 +23,6 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { Oval } from "react-loader-spinner";
-import { AppContext } from "../../App";
-import { Navigate, redirect } from "react-router-dom";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -127,35 +125,37 @@ const LoginForm = ({ toogleLogin, setError }) => {
                   )}
                 </div>
               </div>
-              <button className="submit-btn" type="submit">
-                {isLoading ? (
-                  <Oval
-                    height={20}
-                    width={20}
-                    color="#f5f5f5"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                    ariaLabel="oval-loading"
-                    secondaryColor="#4fa94d"
-                    strokeWidth={4}
-                    strokeWidthSecondary={2}
-                  />
-                ) : (
-                  "Login"
-                )}
-              </button>
+              <div className="login-btn-container">
+                <button className="login-btn" type="submit">
+                  {isLoading ? (
+                    <Oval
+                      height={20}
+                      width={20}
+                      color="#f5f5f5"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      visible={true}
+                      ariaLabel="oval-loading"
+                      secondaryColor="#4fa94d"
+                      strokeWidth={4}
+                      strokeWidthSecondary={2}
+                    />
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+              </div>
             </Form>
           )}
         </Formik>
         <div className="division-google">
           <div className="line-google-one"></div>
-          <h3>Or</h3>
+          <h3>O</h3>
           <div className="line-google-one"></div>
         </div>
         <div className="login-google-container">
           <button className="google-login" onClick={handleGoogleLogin}>
-            <h3 className="google-login-title">Login with Google</h3>
+            <h3 className="google-login-title">Login con Google</h3>
             <FcGoogle />
           </button>
         </div>

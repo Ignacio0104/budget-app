@@ -1,38 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "../style/mainStyle.scss";
+
 .input-container{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.email-container input{
-    width: 70vw;
+.email-container{
+    input{
+        width: 70vw;
+    }
 }
 
-.submit-btn{
+.login-btn-container{
     margin: auto;
-    border: none;
-    background-color: #012A4A;
-    color: #f5f5f5;
-    padding: 10px 60px;
-    font-family: 'Quicksand', sans-serif;
-    margin-bottom: 10px;
+    .login-btn{
+        border: none;
+        @include submitButton(#252525,#FAFAFA);
+        padding: 10px 60px;
+        @extend quickSand;
+        margin-bottom: 10px;
+    }
 }
 
 .password-container{
     display: flex;
 }
-.password-container input{
-    width: 50vw;
-    margin-right: 30px;
+
+.password-container{
+    input{
+        width: 50vw;
+        margin-right: 30px;
+    }
 }
+
 
 .eye-icon-container{
     cursor: pointer;
 }
 .line-google-one{
-    border-bottom: 1px solid #012A4A;
+    border-bottom: 1px solid whitesmoke;
     width: 30%;
     margin: 10px 0px;
 }
@@ -41,11 +48,17 @@
     justify-content: space-around;
     align-items: center;
 }
-.division-google > h3{
-    font-size: 25px;
-    margin-block-start: .2em;
-    margin-block-end: .2em;
+
+.division-google{
+    >h3{
+        font-size: 25px;
+        margin-block-start: .2em;
+        margin-block-end: .2em;
+        @extend dosis;
+        letter-spacing: 2px;
+    }
 }
+
 .login-google-container{
     display: flex;
     justify-content: center;
@@ -74,9 +87,11 @@
     letter-spacing: 1px;
 }
 
-.google-login svg{
-    font-size: 30px;
-    border: 1px solid gray;
-    border-radius: 50%;
-    padding: 2px;
+.google-login{
+    svg{
+        font-size: 30px;
+        border: 1px solid gray;
+        border-radius: 50%;
+        padding: 2px;
+    }
 }

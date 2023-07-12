@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/pure/Navbar";
 import LoginPage from "./components/pages/LoginPage";
 import HomePage from "./components/pages/HomePage";
 import RegisterPage from "./components/pages/RegisterPage";
 import ResetPassword from "./components/pages/ResetPassword";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import Loader from "./components/pure/Loader";
 import ExpensesPage from "./components/pages/ExpensesPage";
 import GoalsPage from "./components/pages/GoalsPage";
@@ -72,6 +71,28 @@ function App() {
             ></Route>
           </Routes>
         </BrowserRouter>
+        <div class="background">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </AppContext.Provider>
   );

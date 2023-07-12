@@ -1,6 +1,6 @@
 import { useField } from "formik";
 import { useEffect } from "react";
-import "./CustomInput.css";
+import "./CustomInput.scss";
 
 const CustomInput = ({ label, handleChange, toogleVisibility, ...props }) => {
   const [field, meta] = useField(props);
