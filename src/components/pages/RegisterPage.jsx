@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./RegisterPage.css";
+import "./RegisterPage.scss";
 import Register from "../pure/RegisterForm";
-import { Alert, Snackbar } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AlertNotification from "../pure/AlertNotification";
+import WestIcon from "@mui/icons-material/West";
 
 const RegisterPage = () => {
   const [snackBarInfo, setSnackBarInfo] = useState({
@@ -30,6 +30,11 @@ const RegisterPage = () => {
   return (
     <div className="register-main-container">
       <div className="register-container">
+        <div className="back-arrow-container">
+          <Link to={"/loginPage"}>
+            <WestIcon />
+          </Link>
+        </div>
         <h2 className="main-title">Registrate</h2>
         <Register
           handleError={updateSnackBar}

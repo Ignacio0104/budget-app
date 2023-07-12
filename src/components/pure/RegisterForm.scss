@@ -1,0 +1,29 @@
+@import "../style/mainStyle.scss";
+
+.input-container{
+    width: 80vw;
+}
+
+.input-container{
+    &  input {
+        width: 90%;
+    }  
+}
+
+.password-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.submit-btn{
+    @include submitButton;
+    padding: 10px 60px;
+    @extend dosis;
+    margin-bottom: 20px;
+    width: 100%;
+    margin: 10px 0px;
+}
+
+.eye-icon-container{
+    color: whitesmoke;
+}

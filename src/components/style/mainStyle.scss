@@ -9,7 +9,12 @@ dosis{
     font-family: 'Dosis', sans-serif;
 }
 
-@mixin transparent-card ($backColor, $borderColor: 50%,) {
+$transparentCardBack : rgba(0, 0, 0, 0.758);
+$transparentCardColor:  whitesmoke;
+$submitButtonColor: #FAFAFA;
+$submitButtonBack: #252525;
+
+@mixin transparent-card ($backColor:$transparentCardBack, $borderColor:$transparentCardColor) {
     background: $backColor;
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -18,7 +23,7 @@ dosis{
     border: 1px solid $borderColor
 }
 
-@mixin submitButton($backColor,$color){
+@mixin submitButton($backColor: $submitButtonBack,$color:$submitButtonColor){
     font-family: monospace;
     font-size: 1.2rem;
     color: $color;
@@ -29,7 +34,6 @@ dosis{
     background: $backColor;
     box-shadow: 3px 3px $color;
     cursor: pointer;
-    margin: 35px 0;
 
     &:active{
         box-shadow: none;

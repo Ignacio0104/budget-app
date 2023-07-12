@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "../style/mainStyle.scss";
 
 .loader-container{
     display: flex;
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background-color: #a9d6e5;
+    background-color: #74C69D;
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
@@ -15,7 +14,7 @@
 }
 
 .loader-container h1{
-    font-family: 'Quicksand', sans-serif;
+    @extend quickSand;
     font-size: 50px;
     margin-block-start: 0px;
     padding-top: 20%;

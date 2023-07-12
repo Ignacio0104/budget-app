@@ -1,14 +1,5 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
 import React, { useEffect } from "react";
-import { app } from "../../firebase/fibaseConfig";
+
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
 import "./HomePage.css";
@@ -17,8 +8,7 @@ import GoalsCard from "../pure/GoalsCard";
 import { Link } from "react-router-dom";
 import SimulationCard from "../pure/SimulationCard";
 import useFirebase from "../../hooks/useFirebase";
-import { Alert, CircularProgress, Snackbar } from "@mui/material";
-import { TransitionDown } from "../utils/snackBarAnimations";
+import { CircularProgress } from "@mui/material";
 import AlertNotification from "../pure/AlertNotification";
 
 const HomePage = () => {

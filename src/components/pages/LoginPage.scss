@@ -44,6 +44,19 @@
     align-items: center;
 }
 
-.register-link{
-    margin-top: 10px;
+
+.forgot-register-container{
+    display: flex;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-around;
+    *:-webkit-any-link{
+        color: whitesmoke;
+    }
+}
+
+.back-arrow-container{
+    svg{
+        color: whitesmoke;
+    }
 }

@@ -1,0 +1,28 @@
+@import "../style/mainStyle.scss";
+.register-main-container{
+    padding: 70px 10px;
+}
+
+.register-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include transparent-card($transparentCardBack,$transparentCardColor);
+    padding: 10px;
+}
+
+.main-title{
+    margin-block-end: 25px;
+    margin-block-start: 0px;
+    @extend quickSand;
+    font-size: 30px;
+    color: whitesmoke;
+}
+
+.back-arrow-container{
+    display: flex;
+    width: 100%;
+    svg{
+        font-size: 30px;
+    }
+}

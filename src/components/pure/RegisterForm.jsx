@@ -5,17 +5,10 @@ import CustomInput from "./CustomInput";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  doc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
-import "./RegisterForm.css";
-import { Alert, CircularProgress, Snackbar } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import "./RegisterForm.scss";
+import { CircularProgress } from "@mui/material";
 
 const loginSchema = yup.object().shape({
   name: yup
@@ -174,13 +167,15 @@ const Register = ({ handleError, confirmSubmit }) => {
                   )}
                 </div>
               </div>
-              <button className="submit-btn" type="submit">
-                {submitting ? (
-                  <CircularProgress size="20px" color="info" />
-                ) : (
-                  "Submit"
-                )}
-              </button>
+              <div className="register-submit-btn">
+                <button className="submit-btn" type="submit">
+                  {submitting ? (
+                    <CircularProgress size="20px" color="info" />
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
             </Form>
           )}
         </Formik>

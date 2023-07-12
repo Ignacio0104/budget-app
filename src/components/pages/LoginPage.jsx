@@ -35,10 +35,10 @@ const LoginPage = ({ handleLogin }) => {
         </div>
         <div className="forgot-register-container">
           <Link to={"/resetPassword"} className="forgot-link">
-            Olvidaste tu clave?
+            ¿Olvidaste tu clave?
           </Link>
           <Link to={"/register"} className="register-link">
-            Register
+            Registrate
           </Link>
         </div>
       </div>
