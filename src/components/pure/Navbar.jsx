@@ -31,7 +31,9 @@ const Navbar = () => {
             {!openResponsive ? <MenuIcon /> : <CloseIcon />}
           </span>
           <h3 className="navbar-title">
-            Expense <img src={graphNavBar} alt="graph" /> Tracker
+            <Link to={"/home"}>
+              Expense <img src={graphNavBar} alt="graph" /> Tracker
+            </Link>
           </h3>
         </div>
         <div

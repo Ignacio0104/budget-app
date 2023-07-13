@@ -1,0 +1,49 @@
+@import "../style/mainStyle.scss";
+
+
+.add-deposit button, .delete-goal button{
+    display: flex;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 16px;
+
+    backdrop-filter: blur(6.8px);
+    -webkit-backdrop-filter: blur(6.8px);
+    padding: 10px;
+    cursor: pointer;
+    @extend quickSand;
+    letter-spacing: 1px;
+
+}
+
+.add-deposit {
+    button{
+        @include greenButton;
+        font-size: 20px;
+    }
+  
+}
+
+.delete-goal {
+    display: flex;
+    button{
+        @include redButton;
+    }
+  
+}
+.no-deposit-container{
+    @extend dosis;
+    display: flex;
+    justify-content: center;
+}
+
+.deposit-list-container{
+    max-height: 40vh;
+    overflow: scroll;
+}
+
+.deposit-item{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

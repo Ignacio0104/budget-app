@@ -133,13 +133,18 @@ const FormAddExpense = ({
                 handleChange={handleChange}
               ></CustomInput>
             </div>
-            <button className="submit-btn" type="submit">
-              {isSubmitting ? (
-                <CircularProgress size={20} color="success"></CircularProgress>
-              ) : (
-                "Submit"
-              )}
-            </button>
+            <div className="add-expense-submit-container">
+              <button className="submit-btn" type="submit">
+                {isSubmitting ? (
+                  <CircularProgress
+                    size={20}
+                    color="success"
+                  ></CircularProgress>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

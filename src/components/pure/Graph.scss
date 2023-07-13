@@ -1,0 +1,6 @@
+@import "../style/mainStyle.scss";
+
+.chart-container{
+    @include transparent-card(rgba(245, 245, 245, 0.63),white);
+    padding-bottom: 20px;
+}

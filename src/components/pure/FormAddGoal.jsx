@@ -3,7 +3,7 @@ import * as yup from "yup";
 import React, { useRef, useState } from "react";
 import CustomInput from "./CustomInput";
 import { CircularProgress } from "@mui/material";
-import "./FormAddGoal.css";
+import "./FormAddGoal.scss";
 import { useEffect } from "react";
 import uploadIcon from "../../assets/images/upload-icon.png";
 import useFirebase from "../../hooks/useFirebase";

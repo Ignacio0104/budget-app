@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import "../style/mainStyle.scss";
 
 .goal-form-toggle{
     display: flex;
@@ -13,9 +12,10 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 10px;
     cursor: pointer;
-    font-family: 'Quicksand', sans-serif;
+    @extend quickSand;
     letter-spacing: 1px;
     font-size: 20px;
+    @include greenButton;
 }
 
 .goal-cards-container{
@@ -26,13 +26,19 @@
 }
 .goal-card{
     display: flex;
-    flex-wrap: wrap;
-    background: rgba(255, 255, 255, 0.48);
-    border-radius: 20px;
+    flex-wrap: wrap;    
+    @include transparent-card($transparentCardBack,rgba(4, 163, 4, 0.418));
     width: 90vw;
     margin: auto;
     height: fit-content;
     padding: 10px;
+    color: whitesmoke;
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 }
 
 .goal-card-image-container{
@@ -41,29 +47,21 @@
    margin-right: 20px;
 }
 
-.goal-card img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
 
 .goal-text-container{
-    font-family: 'Dosis', sans-serif;
+    @extend dosis;
     letter-spacing: 1px;
+    h3{ margin-block-start: 0em;
+        margin-block-end: 0em;}
 }
 
-.goal-text-container h3{
-    margin-block-start: 0em;
-    margin-block-end: 0em;
-}
 
 .percentage-goal-card{
     flex-basis: 100%;
 }
 
 .selected-card{
-    background: rgb(216, 214, 214);
+    @include transparent-card($transparentCardBack,rgba(4, 163, 4, 0.418));
     position: absolute;
     display: grid;
     grid-template-columns: 0.5fr 1fr;
@@ -80,15 +78,20 @@
 
 .percentage-goal-card{
     grid-column: span 2;
-}
-
-.percentage-goal-card input{
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    span{
+        width: 75%;
+        height: 7px;
+    }
+    input{
+        width: 100%;
+    }
 }
 
 
 .no-results-container{
-    font-family: 'Quicksand', sans-serif;
+    @extend quickSand;
     font-size: 20px;
     display: flex;
     justify-content: center;

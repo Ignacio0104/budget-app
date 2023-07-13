@@ -1,0 +1,22 @@
+@import "../style/mainStyle.scss";
+.sim-card{
+    @include transparent-card($transparentCardBack,rgba(253, 4, 199, 0.422));
+    color: whitesmoke;
+    margin: 10px;
+    padding: 3px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    @extend quickSand;
+}
+
+.sim-creation-btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    button{
+        @include greenButton;
+    }
+}

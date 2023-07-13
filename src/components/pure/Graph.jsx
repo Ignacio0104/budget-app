@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Chart, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
+import "./Graph.scss";
 
 export const colorGraph = [
   "#bee9e8",

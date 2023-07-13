@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./DepositsList.css";
+import "./DepositsList.scss";
 import FormAddDeposit from "./FormAddDeposit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {

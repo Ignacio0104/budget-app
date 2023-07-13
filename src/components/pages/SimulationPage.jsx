@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./SimulationPage.css";
+import "./SimulationPage.scss";
 
 import SimulationCreation from "../pure/SimulationCreation";
 import SimulationDisplay from "../pure/SimulationDisplay";
@@ -78,12 +78,14 @@ const SimulationPage = () => {
               onClick={() => handleSimulationSelection(sim)}
             >
               <h2>{sim.key}</h2>
-              <h4>{sim.income}</h4>
+              <h4>${sim.income}</h4>
             </div>
           ))}
-          <button onClick={() => setEditMode(!editMode)}>
-            Crear simulacion
-          </button>
+          <div className="sim-creation-btn">
+            <button onClick={() => setEditMode(!editMode)}>
+              Crear simulacion
+            </button>
+          </div>
         </div>
       ) : (
         <SimulationDisplay

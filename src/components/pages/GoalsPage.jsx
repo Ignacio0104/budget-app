@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from "react";
 import FormAddGoal from "../pure/FormAddGoal";
-import "./GoalsPage.css";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import "./GoalsPage.scss";
+import {
+  CircularProgress,
+  LinearProgress,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import DepositsList from "../pure/DepositsList";
 import WestIcon from "@mui/icons-material/West";
 import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: "#108314",
+      darker: "#0adfd2",
+    },
+  },
+});
 
 const GoalsPage = () => {
   const [creationFormOpen, setCreationFormOpen] = useState(false);
@@ -167,10 +181,13 @@ const GoalsPage = () => {
                 </h4>
               </div>
               <div className="percentage-goal-card">
-                <LinearProgress
-                  variant="determinate"
-                  value={calculatePercentaje(goal)}
-                />
+                <ThemeProvider theme={theme}>
+                  <LinearProgress
+                    variant="determinate"
+                    color="secondary"
+                    value={calculatePercentaje(goal)}
+                  />
+                </ThemeProvider>
               </div>
               {selectedGoal ? (
                 <div
