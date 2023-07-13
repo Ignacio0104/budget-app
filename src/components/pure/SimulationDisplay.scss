@@ -1,0 +1,63 @@
+@import "../style/mainStyle.scss";
+.back-icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    p{
+        margin-left: 10px;
+    }
+}
+
+.simulation-info-container{
+    color: whitesmoke;
+}
+
+.simulation-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px 10px 0px 20px;
+    @extend dosis;
+    .simulation-header-text{
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        h2{
+            margin-block-start: 0em;
+            margin-block-end: 1em;
+        }
+        h5{
+            margin-block-end: 1em;
+        }
+    }
+}
+
+.edit-icon{
+    display: flex;
+    align-items: center;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    padding: 5px;
+    color: #081C15;
+}
+
+.MuiAccordionSummary-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.MuiTypography-root{
+    display: flex;
+}
+
+.accordion-details{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.MuiPaper-root {
+    background-color: $transparentCardBack !important;
+    color: whitesmoke !important;
+}

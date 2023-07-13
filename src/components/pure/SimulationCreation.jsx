@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ModalEdition from "./ModalEdition";
+import WestIcon from "@mui/icons-material/West";
 import "./SimulationCreation.scss";
 
 const SimulationCreation = ({
@@ -278,13 +279,18 @@ const SimulationCreation = ({
                 </tbody>
               </table>
             </div>
-            <button onClick={handleExpensesUpdate}> Agregar </button>
-            <button onClick={confirmSimulation}>Confirmar</button>
+            <div className="sim-creation-btn-container">
+              <button onClick={handleExpensesUpdate}> Agregar </button>
+              <button onClick={confirmSimulation}>Confirmar</button>
+            </div>
           </div>
         )}
         <ModalEdition editionState={editionMode} closeModal={closeModal} />
       </div>
-      <button onClick={() => exitEditMode(false)}>Volver</button>
+      <div className="back-icon-container" onClick={() => exitEditMode(false)}>
+        <WestIcon fontSize="large" />
+        <p>Volver...</p>
+      </div>
     </div>
   );
 };

@@ -44,8 +44,15 @@ const SimulationPage = () => {
     setEditMode(boolean);
   };
 
-  const updateSimulationState = (newSim) => {
-    setSimulations([...simulations, newSim]);
+  const updateSimulationState = async (newSim) => {
+    setSimulations((prevSimulations) =>
+      prevSimulations.map((sim) =>
+        (sim.key === newSim.key) & (sim.income === newSim.income) ? newSim : sim
+      )
+    );
+    await updateItemDb("simulations", {
+      [selectedSimulation.title]: selectedSimulation,
+    });
     setSelectedSimulation(newSim);
   };
 

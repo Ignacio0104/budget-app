@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import "./SimulationDisplay.css";
+import WestIcon from "@mui/icons-material/West";
+import "./SimulationDisplay.scss";
 import {
   Accordion,
   AccordionDetails,
@@ -55,11 +56,14 @@ const SimulationDisplay = ({ simulation, exitEditMode, toogleSelected }) => {
   return (
     <div className="simulation-info-container">
       <div className="simulation-header">
-        <h4>
-          Presupuesto: <br /> <p>${simulation.income}</p>
-        </h4>
+        <div className="simulation-header-text">
+          <h5>
+            Presupuesto: <br />
+          </h5>
+          <h2>${simulation.income}</h2>
+        </div>
         <div className="edit-icon" onClick={() => exitEditMode(true)}>
-          <ModeEditIcon />
+          <ModeEditIcon fontSize="large" />
         </div>
       </div>
       <div className="simulation-graphics">
@@ -127,7 +131,10 @@ const SimulationDisplay = ({ simulation, exitEditMode, toogleSelected }) => {
           </div>
         ) : null}
       </div>
-      <button onClick={() => toogleSelected(null)}>Volver</button>
+      <div className="back-icon-container" onClick={() => toogleSelected(null)}>
+        <WestIcon fontSize="large" />
+        <p>Volver...</p>
+      </div>
     </div>
   );
 };

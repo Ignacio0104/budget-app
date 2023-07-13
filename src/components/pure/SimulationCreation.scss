@@ -1,152 +1,187 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+@import "../style/mainStyle.scss";
 
 .simulation-edit-container{
     display: flex;
-    justify-content: center;
-    margin-top: 6vh;
-}
-
-.input-container{
-    font-family: 'Quicksand', sans-serif;
-}
-
-.income-input label ,.expenses-input > label {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.income-input,.expenses-input{
-    display: flex;
-    flex-direction: column;
     align-items: center;
-}
-
-.sim-submit-btn{
-    background: rgba(255, 255, 255, 0.48);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    font-size: 20px;
-    font-family: 'Quicksand', sans-serif;
-    margin-top: 20px;
-}
-
-
-.simulation-input{
-    background-color:transparent;
-    font-size: 18px;
-    font-family: 'Dosis', sans-serif;
-    width: 100% !important;
-}
-
-.sim-input-ok{
-    border: none;
-    border-bottom: 1px solid #012A4A;
-}
-
-.sim-input-ok:focus{
-    outline: none;
-    border-bottom: 1px solid #2C7DA0;
-    transition: all 0.4s ease-in-out;
-}
-
-
-.sim-input-error{
-    border: 1px solid tomato;
-    border-radius: 5px;
-    transition: all 0.4s ease-in-out;
-}
-
-.sim-error{
-    color: rgb(192, 48, 23);
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    font-family: 'Dosis', sans-serif;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.sim-error p{
-    margin-block-start: 0em;
-    margin-block-end: 0em;
-}
-
-.expenses-input-subcontainer {
-    margin-top: 10px;
-  } 
-
-
-
-
-.expenses-input-subcontainer div{
-    display: flex;
     flex-direction: column;
-    position: relative;
-}
+    margin-top: 6vh;
+    color: whitesmoke;
+    .input-container{
+        @extend quickSand;
 
-.expenses-input-subcontainer button{
-    cursor: pointer;
-    width: 30px;
-}
+    }
 
-.expenses-input-subcontainer label{
-    position: absolute;
-    top: 30%;
-    transform-origin: top left;
-    transition: transform 0.3s ease, font-size 0.3s ease;
-}
+    .expenses-input{
+        .sim-creation-btn-container{
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;    
+            :nth-child(1){
+                background-color: rgba(5, 147, 59, 0.639);
+                border-radius: 5px;
+                color: whitesmoke;
+                padding: 5px 30px;
+                font-size: 15px;
+                border: none;
+                margin-bottom: 20px
+            }
 
-.expenses-input-subcontainer input{
-    height: 40px;
-}
+            :nth-child(2){
+                @include submitButton;
+            }
 
-.sim-table-container{
-    margin-top: 20px;
-    max-height: 35vh;
-    overflow: scroll;
-    width: 100%;
-}
+            button{
+               @extend dosis;
+               font-weight: bold;
+               letter-spacing: 2px;
+            }
+        }
+    }
 
-.sim-expenses-list{
-    width: 100%;
-}
+    .income-input label ,.expenses-input > label {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .income-input,.expenses-input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sim-submit-btn{
+        background: rgba(255, 255, 255, 0.48);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        font-size: 20px;
+        font-family: 'Quicksand', sans-serif;
+        margin-top: 20px;
+    }
+    
+    
+    .simulation-input{
+        background-color:transparent;
+        font-size: 18px;
+        @extend dosis;
+        width: 100% !important;
+        color: whitesmoke;
 
-.sim-expenses-list th{
-    text-align: left;
-    background-color: black;
-    color: white;
-}
+    }
+    
+    .sim-input-ok{
+        border: none;
+        border-bottom: 1px solid rgb(4, 223, 4);
+    }
+    
+    .sim-input-ok:focus{
+        outline: none;
+        border-bottom: 1px solid #2C7DA0;
+        transition: all 0.4s ease-in-out;
+    }
+    
+    
+    .sim-input-error{
+        border: 1px solid tomato;
+        border-radius: 5px;
+        transition: all 0.4s ease-in-out;
+    }
+    
+    .sim-error{
+        color: rgb(192, 48, 23);
+        font-size: 15px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        font-family: 'Dosis', sans-serif;
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .sim-error p{
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+    }
+    
+    .expenses-input-subcontainer {
+        margin-top: 10px;
+      } 
 
-.sim-expenses-list tr:nth-child(odd) td:not(:last-child){
-    background-color: gray;
-}
-.sim-expenses-list tr:nth-child(even) td:not(:last-child){
-    background-color: rgb(207, 206, 206);
-}
-.edit-column{
-    background-color: whitesmoke;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    padding: 1.1px;
-}
-
-.error-container p{
-    margin-block-end: 0em;
-    margin-block-start: 0em;
-}
-
-
-
-.label-move{
-    transform: translate(-0%, -100%);
-    font-size: 12px;
-}
-
-.category-input option{
-    font-size: 10px;
+    
+    .expenses-input-subcontainer div{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .expenses-input-subcontainer button{
+        cursor: pointer;
+        width: 30px;
+    }
+    
+    .expenses-input-subcontainer label{
+        position: absolute;
+        top: 30%;
+        transform-origin: top left;
+        transition: transform 0.3s ease, font-size 0.3s ease;
+    }
+    
+    .expenses-input-subcontainer input{
+        height: 40px;
+    }
+    
+    .sim-table-container{
+        margin-top: 20px;
+        max-height: 35vh;
+        overflow: scroll;
+        width: 100%;
+    }
+    
+    .sim-expenses-list{
+        width: 100%;
+    }
+    
+    .sim-expenses-list th{
+        background-color: black;
+        color: white;
+    }
+    
+    .sim-expenses-list tr:nth-child(odd) td:not(:last-child){
+        background-color: #081C15;
+    }
+    .sim-expenses-list tr:nth-child(even) td:not(:last-child){
+        background-color: #689e80
+    }
+    .edit-column{
+        background-color: whitesmoke;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        padding: 1.1px;
+        color: black;
+    }
+    
+    .error-container p{
+        margin-block-end: 0em;
+        margin-block-start: 0em;
+    }
+    
+    .label-move{
+        transform: translate(-0%, -110%);
+        font-size: 12px;
+    }
+    
+    .category-input {
+        select{
+            background-color: $transparentCardBack;
+            color: whitesmoke;
+        }
+        option{
+            font-size: 10px;
+        }
+       
+    }
+    
 }
 

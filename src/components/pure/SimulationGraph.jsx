@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import React, { useState } from "react";
+import WestIcon from "@mui/icons-material/West";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Doughnut, Bar, Pie, Radar, Line, PolarArea } from "react-chartjs-2";
+import { colorGraph } from "./Graph";
+import "./SimulationGraph.scss";
 
 const SimulationGraph = ({ simulationProp }) => {
   const [simulationData, setSimulationData] = useState({
@@ -10,6 +12,7 @@ const SimulationGraph = ({ simulationProp }) => {
       {
         label: "$ pesos gastados",
         data: simulationProp.expenses.map((exp) => exp.amount),
+        backgroundColor: colorGraph,
       },
     ],
   });
@@ -34,21 +37,46 @@ const SimulationGraph = ({ simulationProp }) => {
     }
   };
 
+  const typeOfGraph = () => {
+    switch (currentGraph) {
+      case 0:
+        return "de Rosca";
+      case 1:
+        return "de Barras";
+      case 2:
+        return "Circular";
+      case 3:
+        return "de Radar";
+      case 4:
+        return "de Líneas";
+      case 5:
+        return "Polar";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div>
       {simulationProp.expenses ? (
         <React.Fragment>
           <div className="button-container">
             <button onClick={() => handleChangeGraph(-1)}>
-              <ArrowBackIosNewIcon />
+              <WestIcon fontSize="large" />
             </button>
+            <h4>Gráfico {typeOfGraph()}</h4>
             <button>
-              <ArrowForwardIosIcon onClick={() => handleChangeGraph(1)} />
+              <ArrowForwardIcon
+                fontSize="large"
+                onClick={() => handleChangeGraph(1)}
+              />
             </button>
           </div>
-          {React.createElement(graphStyles[currentGraph], {
-            data: simulationData,
-          })}
+          <div className="chart-container">
+            {React.createElement(graphStyles[currentGraph], {
+              data: simulationData,
+            })}
+          </div>
         </React.Fragment>
       ) : (
         <p>Cargando datos...</p>

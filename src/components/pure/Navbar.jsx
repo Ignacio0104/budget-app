@@ -30,7 +30,7 @@ const Navbar = () => {
           <span onClick={toggleMenu}>
             {!openResponsive ? <MenuIcon /> : <CloseIcon />}
           </span>
-          <h3 className="navbar-title">
+          <h3 className="navbar-title" onClick={() => setOpenResponsive(false)}>
             <Link to={"/home"}>
               Expense <img src={graphNavBar} alt="graph" /> Tracker
             </Link>
@@ -42,7 +42,6 @@ const Navbar = () => {
           }`}
         >
           <span onClick={toggleMenu}>
-            <Link to={"/home"}>Home</Link>
             <Link to={"/expenses"}>Gastos</Link>
             <Link to={"/goals"}>Objetivos</Link>
             <Link to={"/simulation"}>Simulaciones</Link>
