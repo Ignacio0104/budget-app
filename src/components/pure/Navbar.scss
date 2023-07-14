@@ -47,7 +47,7 @@
 .routes-navbar-container-responsive{
     width: 100%;
     height: calc(100% - 100px);
-    background-color: rgba(0, 0, 0, 0.678);
+    background-color: rgba(0, 0, 0, 0.776);
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -83,3 +83,22 @@
 .routes-navbar-container-responsive a:hover{
     background-color: rgba(176, 174, 174, 0.418);
 }   
+
+.log-out-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0px;
+    text-decoration: none;
+    color: whitesmoke;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 2px;
+    font-size: 30px;
+    p{
+        margin-right: 10px;
+    }
+    &:hover{
+        background-color: rgba(176, 174, 174, 0.418);
+    }
+}

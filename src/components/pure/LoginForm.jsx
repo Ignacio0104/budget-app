@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import { app } from "../../firebase/fibaseConfig";
 import { Oval } from "react-loader-spinner";
+import useFirebase from "../../hooks/useFirebase";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -39,21 +40,23 @@ const LoginForm = ({ toogleLogin, setError }) => {
   const handleChange = (field, value) => {
     setLoginRequest({ ...loginRequest, [field]: value });
   };
+  const { db, auth } = useFirebase();
   const provider = new GoogleAuthProvider();
-  const auth = getAuth();
-  const db = getFirestore(app);
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     provider.setCustomParameters({ prompt: "select_account" });
+
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const email = result.user.email;
         const docRef = collection(db, "users");
         const userQuery = query(docRef, where("email", "==", email));
+
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
           toogleLogin();
+
           navigate("/home");
         } else {
           const userCollectionRef = collection(db, "users");

@@ -261,6 +261,9 @@ const SimulationCreation = ({
                   type="number"
                 />
               </div>
+              <div className="add-sim-btn-container">
+                <button onClick={handleExpensesUpdate}> Agregar +</button>
+              </div>
             </div>
             <div className="error-container">
               {error.isError ? <p>{error.errorMessage}</p> : null}
@@ -295,7 +298,6 @@ const SimulationCreation = ({
               </table>
             </div>
             <div className="sim-creation-btn-container">
-              <button onClick={handleExpensesUpdate}> Agregar </button>
               <button onClick={confirmSimulation}>Confirmar</button>
               <button onClick={deleteSelectedSim}>Eliminar simulacion</button>
             </div>
@@ -303,6 +305,7 @@ const SimulationCreation = ({
         )}
         <ModalEdition editionState={editionMode} closeModal={closeModal} />
       </div>
+
       <div className="back-icon-container" onClick={() => exitEditMode(false)}>
         <WestIcon fontSize="large" />
         <p>Volver...</p>
