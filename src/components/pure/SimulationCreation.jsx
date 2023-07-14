@@ -8,6 +8,7 @@ const SimulationCreation = ({
   simulationProp,
   handleSimulation,
   exitEditMode,
+  deleteSimulation,
 }) => {
   const [ascendentOrder, setAscendentOrder] = useState(false);
   const [error, setError] = useState({
@@ -37,12 +38,15 @@ const SimulationCreation = ({
       setError({ isError: true, errorMessage: "All fields are required" });
     } else {
       setError({ isError: false, errorMessage: "" });
-      handleSimulation({
-        ...simulationProp,
-        title: simulationNameRef.current.value,
-        income: +incomeRef.current.value,
-        expenses: [],
-      });
+      handleSimulation(
+        {
+          ...simulationProp,
+          title: simulationNameRef.current.value,
+          income: +incomeRef.current.value,
+          expenses: [],
+        },
+        true
+      );
     }
   };
 
@@ -59,17 +63,20 @@ const SimulationCreation = ({
         errorMessage: "Favor revisa la información ingresada",
       });
     } else {
-      handleSimulation({
-        ...simulationProp,
-        expenses: [
-          ...simulationProp.expenses,
-          {
-            category: selectRef.current.value,
-            name: expenseRefDescription.current.value,
-            amount: expenseRefAmount.current.value,
-          },
-        ],
-      });
+      handleSimulation(
+        {
+          ...simulationProp,
+          expenses: [
+            ...simulationProp.expenses,
+            {
+              category: selectRef.current.value,
+              name: expenseRefDescription.current.value,
+              amount: expenseRefAmount.current.value,
+            },
+          ],
+        },
+        false
+      );
       setError({
         ...error,
         isError: false,
@@ -95,10 +102,13 @@ const SimulationCreation = ({
       } else {
         updatedList[index] = element;
       }
-      handleSimulation({
-        ...simulationProp,
-        expenses: updatedList,
-      });
+      handleSimulation(
+        {
+          ...simulationProp,
+          expenses: updatedList,
+        },
+        false
+      );
     }
     setEditionMode({ ...editionMode, editOpen: false });
   };
@@ -123,6 +133,11 @@ const SimulationCreation = ({
     }
   };
 
+  const deleteSelectedSim = () => {
+    deleteSimulation(simulationProp);
+    exitEditMode(false);
+  };
+
   const sortTable = (criteria) => {
     setAscendentOrder(!ascendentOrder);
     let orderedList = [];
@@ -139,7 +154,7 @@ const SimulationCreation = ({
               : 1
             : 0
         );
-        handleSimulation({ ...simulationProp, expenses: orderedList });
+        handleSimulation({ ...simulationProp, expenses: orderedList }, false);
         break;
       case "name":
         orderedList = [...simulationProp.expenses].sort((a, b) =>
@@ -153,13 +168,13 @@ const SimulationCreation = ({
               : 1
             : 0
         );
-        handleSimulation({ ...simulationProp, expenses: orderedList });
+        handleSimulation({ ...simulationProp, expenses: orderedList }, false);
         break;
       case "amount":
         orderedList = [...simulationProp.expenses].sort((a, b) =>
           ascendentOrder ? a.amount - b.amount : b.amount - a.amount
         );
-        handleSimulation({ ...simulationProp, expenses: orderedList });
+        handleSimulation({ ...simulationProp, expenses: orderedList }, false);
         break;
       default:
         return;
@@ -282,6 +297,7 @@ const SimulationCreation = ({
             <div className="sim-creation-btn-container">
               <button onClick={handleExpensesUpdate}> Agregar </button>
               <button onClick={confirmSimulation}>Confirmar</button>
+              <button onClick={deleteSelectedSim}>Eliminar simulacion</button>
             </div>
           </div>
         )}

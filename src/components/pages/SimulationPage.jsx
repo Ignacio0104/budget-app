@@ -11,7 +11,7 @@ const SimulationPage = () => {
   const [selectedSimulation, setSelectedSimulation] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
-  const { updateItemDb, fetchUserData } = useFirebase();
+  const { updateItemDb, fetchUserData, removeField } = useFirebase();
 
   useEffect(() => {
     fetchSimulation();
@@ -44,16 +44,27 @@ const SimulationPage = () => {
     setEditMode(boolean);
   };
 
-  const updateSimulationState = async (newSim) => {
+  const deleteSimulation = async (simToDelete) => {
+    let filteredArray = [...simulations].filter(
+      (sim) =>
+        sim.title !== simToDelete.title && sim.income !== simToDelete.income
+    );
+    setSimulations(filteredArray);
+    await removeField("simulations", simToDelete);
+    setEditMode(false);
+    setSelectedSimulation(null);
+  };
+
+  const updateSimulationState = async (newSim, creation) => {
+    setSelectedSimulation(newSim);
     setSimulations((prevSimulations) =>
       prevSimulations.map((sim) =>
         (sim.key === newSim.key) & (sim.income === newSim.income) ? newSim : sim
       )
     );
     await updateItemDb("simulations", {
-      [selectedSimulation.title]: selectedSimulation,
+      [newSim.title]: newSim,
     });
-    setSelectedSimulation(newSim);
   };
 
   const handleSimulationSelection = (sim) => {
@@ -70,10 +81,11 @@ const SimulationPage = () => {
 
   return (
     <div className="simulation-main-container">
-      {editMode ? (
+      {editMode || simulations.length < 1 ? (
         <SimulationCreation
           simulationProp={selectedSimulation}
           handleSimulation={updateSimulationState}
+          deleteSimulation={deleteSimulation}
           exitEditMode={toogleEditMode}
         />
       ) : (simulations.length > 0) & !selectedSimulation ? (

@@ -31,6 +31,14 @@
                 @include submitButton;
             }
 
+            :nth-child(3){  
+                @include redButton;
+                padding: 4px;
+                width: 120px;
+                margin: auto;
+                margin-top: 10px;
+            }
+
             button{
                @extend dosis;
                font-weight: bold;

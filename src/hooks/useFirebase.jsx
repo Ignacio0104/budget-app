@@ -62,12 +62,14 @@ const useFirebase = () => {
 
   const removeField = async (dbName, goal) => {
     let docRef = doc(db, dbName, uid);
-    const imageRef = extractFilename(goal.image);
-    let photoRef = ref(storage, `${imageRef.folder}/${imageRef.filename}`);
+    if (dbName === "goals") {
+      const imageRef = extractFilename(goal.image);
+      let photoRef = ref(storage, `${imageRef.folder}/${imageRef.filename}`);
+      await deleteObject(photoRef);
+    }
     await updateDoc(docRef, {
       [goal.key]: deleteField(),
     });
-    await deleteObject(photoRef);
   };
 
   const updloadFile = async (goalToSubmit, selectedImage) => {

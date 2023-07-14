@@ -17,6 +17,11 @@ const style = {
 
 const ModalEdition = ({ editionState, closeModal }) => {
   const [error, setError] = useState("");
+  const [firstRender, setFirstRender] = useState(true);
+  const [confirmDelete, setConfirmDelete] = useState({
+    confirmModal: false,
+    confirmation: false,
+  });
   const [updatedItem, setUpdatedItem] = useState({
     category: editionState.item.category,
     name: editionState.item.name,
@@ -24,8 +29,18 @@ const ModalEdition = ({ editionState, closeModal }) => {
   });
 
   useEffect(() => {
-    checkFields();
+    if (firstRender) {
+      setFirstRender(false);
+    } else {
+      checkFields();
+    }
   }, [updatedItem]);
+
+  useEffect(() => {
+    if (!confirmDelete.confirmModal & confirmDelete.confirmation) {
+      handleClose(true, true);
+    }
+  }, [confirmDelete]);
 
   const handleChange = (e, field) => {
     setUpdatedItem({
@@ -37,6 +52,7 @@ const ModalEdition = ({ editionState, closeModal }) => {
   const handleClose = (boolean, deleteItem) => {
     if (!error) {
       closeModal(updatedItem, boolean, editionState.index, deleteItem);
+      setFirstRender(true);
     }
   };
 
@@ -61,7 +77,9 @@ const ModalEdition = ({ editionState, closeModal }) => {
           </Typography>
           <div
             className="delete-icon-container"
-            onClick={() => handleClose(true, true)}
+            onClick={() =>
+              setConfirmDelete({ ...confirmDelete, confirmModal: true })
+            }
           >
             <DeleteIcon fontSize="large" className="delete-icon" />
           </div>
@@ -87,6 +105,33 @@ const ModalEdition = ({ editionState, closeModal }) => {
           <div className="button-confirmation-container">
             <Button onClick={() => handleClose(true, false)}>Confirmar</Button>
             <Button onClick={() => handleClose(false, false)}>Cancelar</Button>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={confirmDelete.confirmModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            ¿Desea borrar el item {editionState.item.name}?
+          </Typography>
+          <div className="button-confirmation-container">
+            <Button
+              onClick={() =>
+                setConfirmDelete({ confirmModal: false, confirmation: true })
+              }
+            >
+              Confirmar
+            </Button>
+            <Button
+              onClick={() =>
+                setConfirmDelete({ confirmModal: false, confirmation: false })
+              }
+            >
+              Cancelar
+            </Button>
           </div>
         </Box>
       </Modal>
