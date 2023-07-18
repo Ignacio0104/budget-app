@@ -43,10 +43,12 @@ const LoginPage = ({ handleLogin }) => {
         </div>
       </div>
       {snackBarInfo.open ? (
-        <AlertNotification
-          snackbarInfo={snackBarInfo}
-          onClose={closeSnackBar}
-        />
+        <div className="alert-container">
+          <AlertNotification
+            snackbarInfo={snackBarInfo}
+            onClose={closeSnackBar}
+          />
+        </div>
       ) : null}
     </div>
   );

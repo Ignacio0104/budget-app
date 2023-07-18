@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FormAddGoal from "../pure/FormAddGoal";
 import "./GoalsPage.scss";
 import {
@@ -12,6 +12,8 @@ import DepositsList from "../pure/DepositsList";
 import WestIcon from "@mui/icons-material/West";
 import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";
+import HelpPopover from "../pure/HelpPopover";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 const theme = createTheme({
   palette: {
@@ -33,6 +35,8 @@ const GoalsPage = () => {
     message: "",
     severity: "",
   });
+  const [helpPopover, setHelpPopover] = useState(false);
+  const helpIconRef = useRef();
 
   const fetchGoals = async () => {
     let response = await fetchUserData("goals");
@@ -128,6 +132,10 @@ const GoalsPage = () => {
     }
   };
 
+  const toggleHelpPopover = () => {
+    setHelpPopover(!helpPopover);
+  };
+
   const closeSnackBar = () => {
     setSnackBarInfo({ open: false, message: "", severity: "" });
   };
@@ -142,6 +150,13 @@ const GoalsPage = () => {
 
   return (
     <div>
+      <div
+        className="help-icon-container"
+        onClick={toggleHelpPopover}
+        ref={helpIconRef}
+      >
+        <HelpOutlineIcon fontSize="large" color="info" />
+      </div>
       {creationFormOpen ? (
         <div className="goal-creation-container">
           {creationFormOpen ? <FormAddGoal /> : null}
@@ -225,6 +240,14 @@ const GoalsPage = () => {
         <AlertNotification
           snackbarInfo={snackBarInfo}
           onClose={closeSnackBar}
+        />
+      ) : null}
+      {helpPopover ? (
+        <HelpPopover
+          open={helpPopover}
+          handleClose={toggleHelpPopover}
+          anchor={helpIconRef.current}
+          message={1}
         />
       ) : null}
     </div>

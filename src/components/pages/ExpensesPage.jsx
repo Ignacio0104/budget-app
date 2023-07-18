@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ExpensesPage.scss";
 import { CircularProgress } from "@mui/material";
 import FormAddExpense from "../pure/FormAddExpense";
@@ -6,10 +6,12 @@ import Graph from "../pure/Graph";
 import ExpensesList from "../pure/ExpensesList";
 import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import HelpPopover from "../pure/HelpPopover";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
-    month: 1,
+    month: new Date().getMonth(),
     year: 2023,
   });
   const [expenses, setExpenses] = useState([]);
@@ -23,6 +25,8 @@ const ExpensesPage = () => {
     message: "",
     severity: "",
   });
+  const [helpPopover, setHelpPopover] = useState(false);
+  const helpIconRef = useRef();
 
   const closeSnackBar = () => {
     setSnackBarInfo({ open: false, message: "", severity: "" });
@@ -105,6 +109,10 @@ const ExpensesPage = () => {
     }
   };
 
+  const toggleHelpPopover = () => {
+    setHelpPopover(!helpPopover);
+  };
+
   if (isLoading) {
     return (
       <div className="spinner-container">
@@ -115,12 +123,20 @@ const ExpensesPage = () => {
 
   return (
     <div className="expense-page-container">
+      <div
+        className="help-icon-container"
+        onClick={toggleHelpPopover}
+        ref={helpIconRef}
+      >
+        <HelpOutlineIcon fontSize="large" color="info" />
+      </div>
       <div className="selection-container">
         <div className="month-selection">
           <label>Elige el mes</label>
           <select
             onChange={(e) => handleChange("month", e)}
             className="select-month"
+            defaultValue={monthRequested.month}
           >
             <option value={1}>Enero</option>
             <option value={2}>Febrero</option>
@@ -159,13 +175,13 @@ const ExpensesPage = () => {
                 className={selectionGraph === "Graph" ? "selected-option" : ""}
                 onClick={() => setSelectionGraph("Graph")}
               >
-                Graph
+                Grafico
               </h4>
               <h4
                 className={selectionGraph === "List" ? "selected-option" : ""}
                 onClick={() => setSelectionGraph("List")}
               >
-                List
+                Lista
               </h4>
             </div>
             {selectionGraph === "Graph" ? (
@@ -198,6 +214,14 @@ const ExpensesPage = () => {
         <AlertNotification
           snackbarInfo={snackBarInfo}
           onClose={closeSnackBar}
+        />
+      ) : null}
+      {helpPopover ? (
+        <HelpPopover
+          open={helpPopover}
+          handleClose={toggleHelpPopover}
+          anchor={helpIconRef.current}
+          message={0}
         />
       ) : null}
     </div>

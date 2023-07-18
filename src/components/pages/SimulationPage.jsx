@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./SimulationPage.scss";
-
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SimulationCreation from "../pure/SimulationCreation";
 import SimulationDisplay from "../pure/SimulationDisplay";
 import useFirebase from "../../hooks/useFirebase";
+import HelpPopover from "../pure/HelpPopover";
 
 const SimulationPage = () => {
   const [simulations, setSimulations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSimulation, setSelectedSimulation] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [helpPopover, setHelpPopover] = useState(false);
+  const helpIconRef = useRef();
 
   const { updateItemDb, fetchUserData, removeField } = useFirebase();
 
@@ -71,6 +74,9 @@ const SimulationPage = () => {
     setSelectedSimulation(sim);
   };
 
+  const toggleHelpPopover = () => {
+    setHelpPopover(!helpPopover);
+  };
   const handleSelectedSim = (object) => {
     setSelectedSimulation(object);
   };
@@ -81,6 +87,13 @@ const SimulationPage = () => {
 
   return (
     <div className="simulation-main-container">
+      <div
+        className="help-icon-container"
+        onClick={toggleHelpPopover}
+        ref={helpIconRef}
+      >
+        <HelpOutlineIcon fontSize="large" color="info" />
+      </div>
       {editMode || simulations.length < 1 ? (
         <SimulationCreation
           simulationProp={selectedSimulation}
@@ -113,6 +126,14 @@ const SimulationPage = () => {
           toogleSelected={handleSelectedSim}
         />
       )}
+      {helpPopover ? (
+        <HelpPopover
+          open={helpPopover}
+          handleClose={toggleHelpPopover}
+          anchor={helpIconRef.current}
+          message={2}
+        />
+      ) : null}
     </div>
   );
 };

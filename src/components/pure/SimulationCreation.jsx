@@ -235,7 +235,10 @@ const SimulationCreation = ({
             </div>
             <div className="expenses-input-subcontainer">
               <div>
-                <label className={labelMove.nameLabel ? "label-move" : ""}>
+                <label
+                  className={labelMove.nameLabel ? "label-move" : ""}
+                  onClick={() => toogleLabels("nameLabel", "focus")}
+                >
                   Nombre
                 </label>
                 <input
@@ -248,7 +251,10 @@ const SimulationCreation = ({
                 />
               </div>
               <div>
-                <label className={labelMove.amountLabel ? "label-move" : ""}>
+                <label
+                  className={labelMove.amountLabel ? "label-move" : ""}
+                  onClick={() => toogleLabels("amountLabel", "focus")}
+                >
                   Monto
                 </label>
                 <input

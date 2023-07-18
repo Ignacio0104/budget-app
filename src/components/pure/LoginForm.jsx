@@ -46,7 +46,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
 
   const handleGoogleLogin = () => {
     provider.setCustomParameters({ prompt: "select_account" });
-
+    console.log("Here");
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const email = result.user.email;
@@ -72,7 +72,8 @@ const LoginForm = ({ toogleLogin, setError }) => {
         }
       })
       .catch((error) => {
-        setError({ open: true, error: error, severity: "warning" });
+        console.log(error);
+        setError({ open: true, error: error.message, severity: "warning" });
       });
   };
 
