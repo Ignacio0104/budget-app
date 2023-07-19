@@ -25,21 +25,25 @@ const useFirebase = () => {
   const storage = getStorage(app);
 
   const fetchUserData = async (databaseName) => {
-    if (auth) {
-      const docRef = doc(db, databaseName, uid);
-      const docSnap = await getDoc(docRef);
-      docSnap.data();
-      try {
+    try {
+      if (auth) {
+        const docRef = doc(db, databaseName, uid);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          let data = docSnap.data();
-          return { response: "OK", data: data };
-        } else {
-          return { response: "OK", data: [] };
+        docSnap.data();
+        try {
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            let data = docSnap.data();
+            return { response: "OK", data: data };
+          } else {
+            return { response: "OK", data: [] };
+          }
+        } catch (error) {
+          return { response: "FAIL", data: error.message };
         }
-      } catch (error) {
-        return { response: "FAIL", data: error.message };
       }
+    } catch (e) {
+      return { response: "FAIL", data: e.message };
     }
   };
 
@@ -73,10 +77,12 @@ const useFirebase = () => {
   };
 
   const updloadFile = async (goalToSubmit, selectedImage) => {
-    const storageRef = ref(storage, `${uid}/${goalToSubmit.description}`);
-    const snapshot = await uploadBytes(storageRef, selectedImage.url);
-    const data = await getDownloadURL(storageRef);
-    return data;
+    if (selectedImage !== "") {
+      const storageRef = ref(storage, `${uid}/${goalToSubmit.description}`);
+      const snapshot = await uploadBytes(storageRef, selectedImage.url);
+      const data = await getDownloadURL(storageRef);
+      return data;
+    }
   };
 
   return {

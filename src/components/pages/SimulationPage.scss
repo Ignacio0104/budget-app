@@ -10,6 +10,7 @@
     align-items: center;
     cursor: pointer;
     @extend quickSand;
+    animation: fade-down-about 0.5s ease-out forwards;  
 }
 
 .sim-creation-btn{

@@ -8,6 +8,7 @@ import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HelpPopover from "../pure/HelpPopover";
+import { useNavigate } from "react-router-dom";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
@@ -27,6 +28,7 @@ const ExpensesPage = () => {
   });
   const [helpPopover, setHelpPopover] = useState(false);
   const helpIconRef = useRef();
+  const navigate = useNavigate();
 
   const closeSnackBar = () => {
     setSnackBarInfo({ open: false, message: "", severity: "" });
@@ -66,6 +68,7 @@ const ExpensesPage = () => {
     if (res.response === "OK") {
       setExpenses(res.data);
     } else {
+      navigate("/home");
       setSnackBarInfo({ open: true, error: res.data, severity: "warning" });
     }
     setIsLoading(false);

@@ -9,6 +9,7 @@
     cursor: pointer;
     color: whitesmoke;
     @extend quickSand;
+    animation: fade-in-about 0.5s ease-out forwards;  
 }
 
 .expenses-card:hover{
@@ -30,5 +31,4 @@
     margin-right: 20px;
     position: relative;
 }
-
 

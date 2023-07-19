@@ -143,3 +143,35 @@ $submitButtonBack: #252525;
     box-shadow:  17px 17px 41px #0e0e0e,
                  -17px -17px 41px #363636;
 }
+@keyframes fade-in-about {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }
+    
+    @keyframes fade-up-about {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        }
+        
+    @keyframes fade-down-about {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }

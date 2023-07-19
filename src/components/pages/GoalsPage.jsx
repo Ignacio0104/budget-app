@@ -14,6 +14,8 @@ import useFirebase from "../../hooks/useFirebase";
 import AlertNotification from "../pure/AlertNotification";
 import HelpPopover from "../pure/HelpPopover";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { useNavigate } from "react-router-dom";
+import goalsIcon from "../../assets/images/goals.png";
 
 const theme = createTheme({
   palette: {
@@ -37,16 +39,20 @@ const GoalsPage = () => {
   });
   const [helpPopover, setHelpPopover] = useState(false);
   const helpIconRef = useRef();
+  const navigate = useNavigate();
 
   const fetchGoals = async () => {
     let response = await fetchUserData("goals");
-    const goalsToArray = Object.keys(response.data).map((key) => ({
-      key,
-      ...response.data[key],
-    }));
-
-    setGoals(goalsToArray);
-    setIsFetching(false);
+    if (response.response === "FAIL") {
+      navigate("/home");
+    } else {
+      const goalsToArray = Object.keys(response.data).map((key) => ({
+        key,
+        ...response.data[key],
+      }));
+      setGoals(goalsToArray);
+      setIsFetching(false);
+    }
   };
 
   useEffect(() => {
@@ -176,7 +182,7 @@ const GoalsPage = () => {
               onClick={() => handleChangeSelection(goal)}
             >
               <div className="goal-card-image-container">
-                <img src={goal.image} alt="goal"></img>
+                <img src={goal.image ? goal.image : goalsIcon} alt="goal"></img>
               </div>
               <div className="goal-text-container">
                 <h3>{goal.key}</h3>

@@ -5,6 +5,8 @@ import SimulationCreation from "../pure/SimulationCreation";
 import SimulationDisplay from "../pure/SimulationDisplay";
 import useFirebase from "../../hooks/useFirebase";
 import HelpPopover from "../pure/HelpPopover";
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const SimulationPage = () => {
   const [simulations, setSimulations] = useState([]);
@@ -13,6 +15,7 @@ const SimulationPage = () => {
   const [editMode, setEditMode] = useState(false);
   const [helpPopover, setHelpPopover] = useState(false);
   const helpIconRef = useRef();
+  const navigate = useNavigate();
 
   const { updateItemDb, fetchUserData, removeField } = useFirebase();
 
@@ -24,13 +27,17 @@ const SimulationPage = () => {
     setIsLoading(true);
     fetchUserData("simulations")
       .then((res) => {
-        setSimulations(
-          Object.keys(res.data).map((key) => ({
-            key,
-            ...res.data[key],
-          }))
-        );
-        setIsLoading(false);
+        if (res.response === "FAIL") {
+          navigate("/home");
+        } else {
+          setSimulations(
+            Object.keys(res.data).map((key) => ({
+              key,
+              ...res.data[key],
+            }))
+          );
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -82,9 +89,12 @@ const SimulationPage = () => {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="spinner-container">
+        <CircularProgress size={60} color="success"></CircularProgress>
+      </div>
+    );
   }
-
   return (
     <div className="simulation-main-container">
       <div
