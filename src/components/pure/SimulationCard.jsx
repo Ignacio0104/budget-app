@@ -20,8 +20,8 @@ const SimulationCard = () => {
           ></img>
         </div>
         <div className="simulation-text">
-          <h3>Simulacion</h3>
-          <h4>Proyecta y planifica tus próximos meses</h4>
+          <h3>Simulación</h3>
+          <h4>Proyecta y planifica tus próximos meses aquí</h4>
         </div>
       </div>
     </div>

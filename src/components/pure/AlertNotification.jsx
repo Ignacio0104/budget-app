@@ -12,7 +12,7 @@ const AlertNotification = ({ snackbarInfo, onClose }) => {
       TransitionComponent={TransitionDown}
       onClose={onClose}
     >
-      <Alert severity={severity ? severity : "success"} sx={{ width: "100%" }}>
+      <Alert severity={severity ? severity : "info"} sx={{ width: "100%" }}>
         {message}
       </Alert>
     </Snackbar>

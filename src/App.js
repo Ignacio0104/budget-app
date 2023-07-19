@@ -12,14 +12,23 @@ import ExpensesPage from "./components/pages/ExpensesPage";
 import GoalsPage from "./components/pages/GoalsPage";
 import SimulationPage from "./components/pages/SimulationPage";
 import useFirebase from "./hooks/useFirebase";
+import AlertNotification from "./components/pure/AlertNotification";
+import { withServiceWorkerUpdater } from "@3m1/service-worker-updater";
 
 export const AppContext = createContext(null);
 
-function App() {
+function App(props) {
   const [isLoggedIn, setIsLoggedIn] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const [updateNotification, setUpdateNotification] = useState({
+    open: true,
+    message:
+      "La aplicación se va a actualizar, hace click en cualquier parte de la pantalla para refrescar",
+    severity: "success",
+  });
   const { auth } = useFirebase();
+  const { newServiceWorkerDetected, onLoadNewServiceWorkerAccept } = props;
 
   const toogleLoggedIn = () => {
     setIsLoggedIn(auth.currentUser);
@@ -42,8 +51,20 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  const closeUpdateBar = () => {
+    onLoadNewServiceWorkerAccept();
+    console.log("Instalado desde el main");
+    setUpdateNotification({ ...updateNotification, open: false });
+  };
+
   return (
     <AppContext.Provider value={{ userLoggedIn: isLoggedIn }}>
+      {newServiceWorkerDetected ? (
+        <AlertNotification
+          snackbarInfo={updateNotification}
+          onClose={closeUpdateBar}
+        />
+      ) : null}
       <div className="App">
         <div class="background">
           <span></span>
@@ -99,4 +120,4 @@ function App() {
   );
 }
 
-export default App;
+export default withServiceWorkerUpdater(App);
