@@ -35,14 +35,10 @@ function App(props) {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       setIsLoggedIn(user);
       setIsInitialRender(false);
     });
-
-    return () => {
-      unsubscribe();
-    };
   }, [auth]);
 
   useEffect(() => {
@@ -66,7 +62,7 @@ function App(props) {
         />
       ) : null}
       <div className="App">
-        <div class="background">
+        <div className="background">
           <span></span>
           <span></span>
           <span></span>

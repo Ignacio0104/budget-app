@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const ExpensesPage = () => {
   const [monthRequested, setMonthRequested] = useState({
-    month: new Date().getMonth(),
+    month: new Date().getMonth() + 1,
     year: 2023,
   });
   const [expenses, setExpenses] = useState([]);

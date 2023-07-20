@@ -5,7 +5,6 @@ import {
   setDoc,
   updateDoc,
   deleteField,
-  FieldValue,
 } from "firebase/firestore";
 import { app } from "../firebase/fibaseConfig";
 import { getAuth } from "firebase/auth";
