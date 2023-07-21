@@ -84,11 +84,12 @@
 
 }
 
-.no-graph-text{
+.no-information-text{
     display: flex;
     justify-content: center;
     font-size: 16px;
     @extend quickSand;
+    color: whitesmoke;
 }
 
 

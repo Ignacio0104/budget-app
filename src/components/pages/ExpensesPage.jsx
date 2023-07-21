@@ -168,7 +168,7 @@ const ExpensesPage = () => {
       </div>
       <div className="expenses-container">
         {monthExpensesLength <= 0 ? (
-          <p className="no-graph-text">
+          <p className="no-information-text">
             No hay gastos para el mes seleccionado
           </p>
         ) : (

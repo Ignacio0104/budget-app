@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import "./ExpensesList.css";
+import "./ExpensesList.scss";
 import {
   Box,
   Button,

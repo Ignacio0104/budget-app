@@ -54,65 +54,62 @@ function App(props) {
   };
 
   return (
-    <AppContext.Provider value={{ userLoggedIn: isLoggedIn }}>
+    <div className="App">
       {newServiceWorkerDetected ? (
         <AlertNotification
           snackbarInfo={updateNotification}
           onClose={closeUpdateBar}
         />
       ) : null}
-      <div className="App">
-        <div className="background">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <BrowserRouter>
-          {isLoading && <Loader />}
-          <Navbar />
-          <Routes>
-            <Route
-              path="/loginPage"
-              element={<LoginPage handleLogin={toogleLoggedIn} />}
-            ></Route>
-            <Route path="/home" element={<HomePage />}></Route>
-            <Route path="/register" element={<RegisterPage />}></Route>
-            <Route path="/resetPassword" element={<ResetPassword />}></Route>
-            <Route path="/expenses" element={<ExpensesPage />}></Route>
-            <Route path="/goals" element={<GoalsPage />}></Route>
-            <Route path="/simulation" element={<SimulationPage />}></Route>
-            <Route
-              path="/"
-              element={
-                auth.currentUser ? (
-                  <HomePage />
-                ) : (
-                  <LoginPage handleLogin={toogleLoggedIn} />
-                )
-              }
-            ></Route>
-          </Routes>
-        </BrowserRouter>
+      <div className="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-    </AppContext.Provider>
+      <BrowserRouter>
+        {isLoading && <Loader />}
+        <Navbar />
+        <Routes>
+          <Route
+            path="/loginPage"
+            element={<LoginPage handleLogin={toogleLoggedIn} />}
+          ></Route>
+          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/resetPassword" element={<ResetPassword />}></Route>
+          <Route path="/expenses" element={<ExpensesPage />}></Route>
+          <Route path="/goals" element={<GoalsPage />}></Route>
+          <Route path="/simulation" element={<SimulationPage />}></Route>
+          <Route
+            path="/"
+            element={
+              auth.currentUser ? (
+                <HomePage />
+              ) : (
+                <LoginPage handleLogin={toogleLoggedIn} />
+              )
+            }
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
