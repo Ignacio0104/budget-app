@@ -1,18 +1,15 @@
 import React from "react";
-import {
-  cleanup,
-  getByRole,
-  prettyDOM,
-  render,
-  screen,
-} from "@testing-library/react";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { cleanup, render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { getAuth, signInWithPopup } from "firebase/auth";
 import LoginPage from "../components/pages/LoginPage";
 import userEvent from "@testing-library/user-event";
-import App from "../App";
+import { getDocs, getFirestore } from "firebase/firestore";
+import { auth } from "firebase/auth";
+import { app } from "../firebase/fibaseConfig";
 
 jest.mock("firebase/auth");
+jest.mock("firebase/firestore");
 
 beforeEach(() => cleanup());
 
@@ -81,9 +78,7 @@ describe("login process works correctly", () => {
   });
 });
 
-//!Esto no funciona, preguntar!!
-
-describe("forgot password work correctly", () => {
+describe("forgot password and register link work properly", () => {
   test("should open the forgot password form when clicking 'Olvidaste tu clave'", async () => {
     const user = userEvent.setup();
     getAuth.mockReturnValue({
@@ -103,9 +98,6 @@ describe("forgot password work correctly", () => {
     await user.click(forgotPasswordLink);
     expect(window.location.href).toContain("/resetPassword");
   });
-});
-
-describe("register  work correctly", () => {
   test("should open the register form when clicking 'registrate'", async () => {
     const user = userEvent.setup();
     getAuth.mockReturnValue({

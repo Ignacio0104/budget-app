@@ -46,7 +46,6 @@ const LoginForm = ({ toogleLogin, setError }) => {
 
   const handleGoogleLogin = () => {
     provider.setCustomParameters({ prompt: "select_account" });
-    console.log("Here");
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const email = result.user.email;
@@ -56,7 +55,6 @@ const LoginForm = ({ toogleLogin, setError }) => {
         const querySnapshot = await getDocs(userQuery);
         if (querySnapshot.docs.length > 0) {
           toogleLogin();
-
           navigate("/home");
         } else {
           const userCollectionRef = collection(db, "users");
@@ -103,7 +101,7 @@ const LoginForm = ({ toogleLogin, setError }) => {
           validationSchema={loginSchema}
         >
           {(props) => (
-            <Form className="input-container">
+            <Form className="login-input-container">
               <div className="email-container">
                 <CustomInput
                   label="Email"

@@ -1,14 +1,19 @@
 @import "../style/mainStyle.scss";
 
-.input-container{
+.manual-login-container{
+    width: 100%;
+}
+
+.login-input-container{
     display: flex;
     flex-direction: column;
     gap: 20px;
+
 }
 
 .email-container{
     input{
-        width: 70vw;
+        width: 100%;
     }
 }
 
@@ -29,7 +34,7 @@
 
 .password-container{
     input{
-        width: 50vw;
+        width: 50%;
         margin-right: 30px;
     }
 }
@@ -94,4 +99,23 @@
         border-radius: 50%;
         padding: 2px;
     }
+}
+
+@media screen and (min-width:570px) {
+
+    .login-input-container{
+       margin: auto;
+    }
+    .email-container{
+        margin: auto;
+        width: 70%;    
+    }
+    .password-container{
+        margin: auto;
+        display: flex;
+        input{
+            width: 80%;
+            margin-right: 50px;
+        }
+    } 
 }
